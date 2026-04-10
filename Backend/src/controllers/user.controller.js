@@ -15,8 +15,13 @@ const sendToken = async (user, statusCode, res, message) => {
         .json({
             success: true,
             message,
-            token,
-            user
+            user: {
+                id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                contactNumber: user.contactNumber,
+                role: user.role
+            }
         })
 }
 
@@ -53,15 +58,52 @@ const registerController = async (req, res) => {
 
         await sendToken(user, 201, res, "User registered successfully ✅")
     } catch (error) {
+        console.error("Register error:", error)
         return res.status(500)
             .json({
                 success: false,
-                message: "Internal server error"
+                message: error.message || "Internal server error"
             })
     }
 }
 
+const loginController = async (req, res) => {
+    try {
+        const { email, password } = req.body
+
+        const user = await userModel.findOne({
+            email
+        })
+
+        if (!user) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "User not found"
+                })
+        }
+
+        const isPasswordValid = await user.comparePassword(password)
+
+        if (!isPasswordValid) {
+            return res.status(401)
+                .json({
+                    success: false,
+                    message: "Invalid password"
+                })
+        }
+
+        await sendToken(user, 200, res, "User logged in successfully ✅")
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
+    }
+}
 
 export {
-    registerController
+    registerController,
+    loginController
 }
