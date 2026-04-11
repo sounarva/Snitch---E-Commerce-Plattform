@@ -103,7 +103,43 @@ const loginController = async (req, res) => {
     }
 }
 
+const googleCallbackController = async (req, res) => {
+    try {
+        const profile = req.user
+        if (!profile || !profile.emails || !profile.emails[0].value) {
+            return res.redirect("http://localhost:5173/login");
+        }
+        
+        const email = profile.emails[0].value;
+        let user = await userModel.findOne({ email });
+
+        if(!user){
+            user = await userModel.create({
+                fullname: profile.displayName,
+                email,
+                password: "",
+                contactNumber: profile.phone || "",
+                role: "buyer"
+            })
+        }
+        
+        const token = jwt.sign({
+            id: user._id
+        }, config.JWT_SECRET,
+            {
+                expiresIn: "7d"
+            })
+        res.cookie("token", token)
+        res.redirect("http://localhost:5173/");
+
+    } catch (error) {
+        console.error("Google callback error:", error)
+        res.redirect("http://localhost:5173/login");
+    }
+}
+
 export {
     registerController,
-    loginController
+    loginController,
+    googleCallbackController
 }

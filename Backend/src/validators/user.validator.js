@@ -14,9 +14,8 @@ const validate = (req, res, next) => {
 
 const validateUserRegistration = [
     body("fullname")
-        .trim()
-        .notEmpty()
-        .withMessage("Full name is required"),
+        .optional({ checkFalsy: true })
+        .trim(),
     body("email")
         .trim()
         .notEmpty()
@@ -24,15 +23,13 @@ const validateUserRegistration = [
         .isEmail()
         .withMessage("Invalid email address"),
     body("password")
+        .optional({ checkFalsy: true })
         .trim()
-        .notEmpty()
-        .withMessage("Password is required")
         .isLength({ min: 6 })
         .withMessage("Password must be at least 6 characters long"),
     body("contactNumber")
+        .optional({ checkFalsy: true })
         .trim()
-        .notEmpty()
-        .withMessage("Contact number is required")
         .isLength({ min: 10, max: 10 })
         .matches(/^[0-9]{10}$/)
         .withMessage("Contact number must be 10 digits long"),
@@ -47,9 +44,8 @@ const validateUserLogin = [
         .isEmail()
         .withMessage("Invalid email address"),
     body("password")
-        .trim()
-        .notEmpty()
-        .withMessage("Password is required"),
+        .optional({ checkFalsy: true })
+        .trim(),
     validate,
 ]
 
