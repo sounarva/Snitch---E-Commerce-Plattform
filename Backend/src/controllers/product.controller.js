@@ -42,6 +42,29 @@ const createProductController = async (req, res) => {
     }
 }
 
+const getSellerProducts = async (req, res) => {
+    try {
+        const seller = req.user
+        const products = await productModel.find({
+            seller: seller._id
+        }).populate("seller", "fullname email contactNumber")
+
+        return res.status(200)
+            .json({
+                success: true,
+                message: "Products fetched successfully",
+                products
+            })
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
+    }
+}
+
 export {
-    createProductController
+    createProductController,
+    getSellerProducts
 }

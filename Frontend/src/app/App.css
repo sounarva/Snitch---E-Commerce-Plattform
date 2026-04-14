@@ -42,3 +42,31 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #958DA1;
 }
+
+/* ─── Product UI Styles ─── */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+  /* Restore scrollability on mobile if screen is small */
+  #create-product-form {
+    max-height: none;
+    overflow-y: auto;
+  }
+  body, html {
+    overflow: auto !important;
+  }
+}
