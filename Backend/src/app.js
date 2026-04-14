@@ -2,6 +2,7 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
 import userRoutes from "./routes/user.routes.js"
+import productRoutes from "./routes/product.routes.js"
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20"
 import { config } from "./config/config.js"
@@ -23,5 +24,6 @@ passport.use(new GoogleStrategy({
 }))
 
 app.use("/api/v1/auth", userRoutes)
+app.use("/api/v1/product", productRoutes)
 
 export default app
