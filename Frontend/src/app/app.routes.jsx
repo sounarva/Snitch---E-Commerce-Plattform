@@ -3,12 +3,13 @@ import Register from "../features/auth/pages/Register";
 import Login from "../features/auth/pages/Login";
 import CreateProduct from "../features/products/pages/createProduct";
 import ShowProduct from "../features/products/pages/ShowProduct";
+import Home from "../features/products/pages/Home";
 import Protected from "../shared/Protected";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <h1>Welcome to Snitch</h1>
+        element: <Home />
     },
     {
         path: "/login",
