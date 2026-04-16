@@ -136,7 +136,7 @@ const ShowProduct = () => {
     }, []);
 
     const handleAddProduct = () => {
-        navigate("/create-product");
+        navigate("/seller/create-product");
     };
 
     return (

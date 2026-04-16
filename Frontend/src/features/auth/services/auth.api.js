@@ -23,3 +23,8 @@ export const loginAPI = async ({ email, password }) => {
     })
     return response.data
 }
+
+export const getmeAPI = async () => {
+    const response = await authApiInstance.get("/me")
+    return response.data
+}

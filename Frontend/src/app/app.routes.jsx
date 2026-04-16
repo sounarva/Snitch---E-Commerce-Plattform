@@ -3,6 +3,7 @@ import Register from "../features/auth/pages/Register";
 import Login from "../features/auth/pages/Login";
 import CreateProduct from "../features/products/pages/createProduct";
 import ShowProduct from "../features/products/pages/ShowProduct";
+import Protected from "../shared/Protected";
 
 const router = createBrowserRouter([
     {
@@ -18,12 +19,12 @@ const router = createBrowserRouter([
         element: <Register />
     },
     {
-        path: "/create-product",
-        element: <CreateProduct />
+        path: "/seller/create-product",
+        element: <Protected isSeller="seller"><CreateProduct /></Protected>
     },
     {
-        path: "/show-product",
-        element: <ShowProduct />
+        path: "/seller/show-product",
+        element: <Protected isSeller="seller"><ShowProduct /></Protected>
     }
 ])
 

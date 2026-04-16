@@ -1,6 +1,6 @@
 import { setUsers, setLoading, setError } from "../state/auth.slice"
 import { useDispatch, useSelector } from "react-redux"
-import { regsiterAPI, loginAPI } from "../services/auth.api"
+import { regsiterAPI, loginAPI, getmeAPI } from "../services/auth.api"
 
 const useAuth = () => {
     const dispatch = useDispatch()
@@ -38,12 +38,29 @@ const useAuth = () => {
         }
     }
 
+    const getme = async () => {
+        try {
+            dispatch(setLoading(true))
+            dispatch(setError(null))
+            const response = await getmeAPI()
+            dispatch(setUsers(response.user))
+            return { success: true }
+        } catch (error) {
+            const errMsg = error.response?.data?.message || error.message || "Get me failed"
+            dispatch(setError(errMsg))
+            return { success: false, error: errMsg }
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
+
     return {
         user,
         loading,
         error,
         register,
-        login
+        login,
+        getme
     }
 }
 

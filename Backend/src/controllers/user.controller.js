@@ -103,17 +103,35 @@ const loginController = async (req, res) => {
     }
 }
 
+const getmeController = async (req, res) => {
+    try {
+        const user = req.user
+        return res.status(200)
+            .json({
+                success: true,
+                message: "User fetched successfully ✅",
+                user
+            })
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
+    }
+}
+
 const googleCallbackController = async (req, res) => {
     try {
         const profile = req.user
         if (!profile || !profile.emails || !profile.emails[0].value) {
             return res.redirect("http://localhost:5173/login");
         }
-        
+
         const email = profile.emails[0].value;
         let user = await userModel.findOne({ email });
 
-        if(!user){
+        if (!user) {
             user = await userModel.create({
                 fullname: profile.displayName,
                 email,
@@ -122,7 +140,7 @@ const googleCallbackController = async (req, res) => {
                 role: "buyer"
             })
         }
-        
+
         const token = jwt.sign({
             id: user._id
         }, config.JWT_SECRET,
@@ -141,5 +159,6 @@ const googleCallbackController = async (req, res) => {
 export {
     registerController,
     loginController,
-    googleCallbackController
+    googleCallbackController,
+    getmeController
 }
