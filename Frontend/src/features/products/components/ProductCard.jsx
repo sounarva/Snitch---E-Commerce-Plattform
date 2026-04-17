@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 // ─── Fallback Image SVG ─────────────────────────────────────────────
 const ImagePlaceholder = () => (
@@ -14,6 +15,7 @@ const ImagePlaceholder = () => (
 // ─── Product Card Component ─────────────────────────────────────────
 const ProductCard = ({ product, index = 0 }) => {
     const [imgError, setImgError] = useState(false);
+    const navigate = useNavigate()
 
     // Safely access first image
     const imageUrl = product?.images?.[0]?.url || null;
@@ -32,8 +34,13 @@ const ProductCard = ({ product, index = 0 }) => {
         return `${amount}`;
     };
 
+    const handleSingleProduct = () => {
+        navigate(`/product/${product?._id}`)
+    }
+
     return (
         <div
+            onClick={handleSingleProduct}
             id={`product-card-${product?._id || index}`}
             className="group relative bg-[#0D0D14]/80 border border-[#4A4455]/15 rounded-2xl overflow-hidden backdrop-blur-md shadow-[0_8px_40px_rgba(0,0,0,0.3)] transition-all duration-500 hover:-translate-y-1.5 hover:border-[#7C3AED]/30 hover:shadow-[0_12px_50px_rgba(124,58,237,0.15)] cursor-pointer"
             style={{

@@ -10,7 +10,12 @@ const sendToken = async (user, statusCode, res, message) => {
         {
             expiresIn: "7d"
         })
-    res.cookie("token", token)
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    })
 
     res.status(statusCode)
         .json({
@@ -175,7 +180,12 @@ const googleCallbackController = async (req, res) => {
             {
                 expiresIn: "7d"
             })
-        res.cookie("token", token)
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        })
         res.redirect("http://localhost:5173/");
 
     } catch (error) {

@@ -141,74 +141,89 @@ const Navbar = () => {
                         <CartIcon />
                     </button>
 
-                    <button
-                        id="nav-orders"
-                        className="w-10 h-10 rounded-xl flex items-center justify-center text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10 transition-all duration-300 cursor-pointer bg-transparent border-none outline-none"
-                        title="Orders"
-                    >
-                        <OrdersIcon />
-                    </button>
-
-                    {/* Profile Section with Dropdown */}
-                    <div className="relative flex items-center ml-1">
-                        <button
-                            id="nav-profile"
-                            onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 cursor-pointer bg-transparent border-none outline-none ${isProfileOpen ? "text-[#D2BBFF] bg-[#7C3AED]/15" : "text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10"
-                                }`}
-                            title="Profile"
-                        >
-                            <ProfileIcon />
-                        </button>
-
-                        {/* Username */}
-                        {user && (
-                            <span
-                                id="nav-username"
-                                className="ml-1 text-[#958DA1] text-xs font-medium tracking-wider select-none cursor-pointer"
-                                onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            >
-                                {getUsername(user.email)}
-                            </span>
-                        )}
-
-                        {/* Profile Dropdown */}
-                        <div
-                            className={`absolute top-full right-0 mt-4 w-60 rounded-2xl border border-[#4A4455]/30 bg-[#0D0D14]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl origin-top transition-all duration-300 ${isProfileOpen ? "opacity-100 scale-100 translate-y-0 visible" : "opacity-0 scale-95 -translate-y-2 invisible"
-                                }`}
-                        >
-                            {user && (
-                                <div className="mb-4 text-left">
-                                    <p className="text-[10px] uppercase tracking-widest text-[#7C3AED] font-bold mb-1">
-                                        {user.role || (isSeller ? "Seller" : "Buyer")} Account
-                                    </p>
-                                    <p className="text-sm text-[#E4E1E9] font-medium truncate">
-                                        {user.email}
-                                    </p>
-                                </div>
-                            )}
-
-                            <div className="h-px w-full bg-linear-to-r from-transparent via-[#4A4455]/40 to-transparent mb-3" />
-
+                    {user ? (
+                        <>
                             <button
-                                onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold text-[#ffb4ab] bg-[#93000a]/20 transition-all duration-300 cursor-pointer"
+                                id="nav-orders"
+                                className="w-10 h-10 rounded-xl flex items-center justify-center text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10 transition-all duration-300 cursor-pointer bg-transparent border-none outline-none"
+                                title="Orders"
                             >
+                                <OrdersIcon />
+                            </button>
 
-                                {loading ? (
-                                    <>
-                                        <SpinnerIcon />
-                                        Logging Out...
-                                    </>
-                                ) : (
-                                    <>
-                                        <LogoutIcon />
-                                        Logout
-                                    </>
-                                )}
+                            {/* Profile Section with Dropdown */}
+                            <div className="relative flex items-center ml-1">
+                                <button
+                                    id="nav-profile"
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                    className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 cursor-pointer bg-transparent border-none outline-none ${isProfileOpen ? "text-[#D2BBFF] bg-[#7C3AED]/15" : "text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10"
+                                        }`}
+                                    title="Profile"
+                                >
+                                    <ProfileIcon />
+                                </button>
+
+                                {/* Username */}
+                                <span
+                                    id="nav-username"
+                                    className="ml-1 text-[#958DA1] text-xs font-medium tracking-wider select-none cursor-pointer"
+                                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                                >
+                                    {getUsername(user.email)}
+                                </span>
+
+                                {/* Profile Dropdown */}
+                                <div
+                                    className={`absolute top-full right-0 mt-4 w-60 rounded-2xl border border-[#4A4455]/30 bg-[#0D0D14]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl origin-top transition-all duration-300 ${isProfileOpen ? "opacity-100 scale-100 translate-y-0 visible" : "opacity-0 scale-95 -translate-y-2 invisible"
+                                        }`}
+                                >
+                                    <div className="mb-4 text-left">
+                                        <p className="text-[10px] uppercase tracking-widest text-[#7C3AED] font-bold mb-1">
+                                            {user.role || (isSeller ? "Seller" : "Buyer")} Account
+                                        </p>
+                                        <p className="text-sm text-[#E4E1E9] font-medium truncate">
+                                            {user.email}
+                                        </p>
+                                    </div>
+
+                                    <div className="h-px w-full bg-linear-to-r from-transparent via-[#4A4455]/40 to-transparent mb-3" />
+
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold text-[#ffb4ab] bg-[#93000a]/20 transition-all duration-300 cursor-pointer hover:bg-[#93000a]/40"
+                                    >
+
+                                        {loading ? (
+                                            <>
+                                                <SpinnerIcon />
+                                                Logging Out...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <LogoutIcon />
+                                                Logout
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="flex items-center gap-3 ml-2">
+                            <button
+                                onClick={() => navigate("/login")}
+                                className="px-5 py-2 rounded-full font-semibold text-xs uppercase tracking-wider text-[#D2BBFF] border border-[#7C3AED]/40 bg-[#7C3AED]/8 transition-all duration-300 hover:bg-[#7C3AED]/15 hover:border-[#7C3AED]/60 hover:shadow-[0_0_20px_rgba(124,58,237,0.2)] hover:scale-105 active:scale-95 cursor-pointer"
+                            >
+                                Login
+                            </button>
+                            <button
+                                onClick={() => navigate("/register")}
+                                className="px-5 py-2 rounded-full font-semibold text-xs uppercase tracking-wider text-white bg-linear-to-r from-[#7C3AED] to-[#3B82F6] transition-all duration-300 hover:shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:scale-105 active:scale-95 cursor-pointer"
+                            >
+                                Sign Up
                             </button>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
 

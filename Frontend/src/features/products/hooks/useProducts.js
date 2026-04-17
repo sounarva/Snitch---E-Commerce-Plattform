@@ -1,6 +1,6 @@
-import { createSellerProduct, getAllProducts, getSellerProducts } from "../services/products.api"
+import { createSellerProduct, getAllProducts, getSellerProducts, getSingleProduct } from "../services/products.api"
 import { useDispatch } from "react-redux"
-import { setLoading, setError, setSellerProducts, setAllProducts } from "../state/product.slice"
+import { setLoading, setError, setSellerProducts, setAllProducts, setSingleProduct } from "../state/product.slice"
 
 export const useProducts = () => {
     const dispatch = useDispatch()
@@ -49,9 +49,25 @@ export const useProducts = () => {
         }
     }
 
+    const fetchSingleProduct = async (id) => {
+        try {
+            dispatch(setLoading(true))
+            dispatch(setError(null))
+            const response = await getSingleProduct(id)
+            dispatch(setSingleProduct(response.product))
+            return response
+        } catch (error) {
+            dispatch(setError(error.message))
+            return null
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
+
     return {
         createProduct,
         fetchSellerProducts,
-        fetchAllProducts
+        fetchAllProducts,
+        fetchSingleProduct
     }
 }

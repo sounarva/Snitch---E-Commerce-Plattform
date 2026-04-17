@@ -82,8 +82,28 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+const getSingleProduct = async (req, res) => {
+    try {
+        const { id } = req.params
+        const product = await productModel.findById(id)
+        return res.status(200)
+            .json({
+                success: true,
+                message: "Product fetched successfully",
+                product
+            })
+    } catch (error) {
+        return res.status(500)
+        .json({
+            success: false,
+            message: error.message || "Internal server error"
+        })
+    }
+}
+
 export {
     createProductController,
     getSellerProducts,
-    getAllProducts
+    getAllProducts,
+    getSingleProduct
 }

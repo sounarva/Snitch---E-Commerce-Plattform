@@ -259,6 +259,17 @@ const CreateProduct = () => {
 
     return (
         <div className="h-screen w-screen bg-[#0A0A0F] font-[Poppins] relative overflow-hidden flex items-center justify-center p-6 lg:p-8">
+            {/* ═══ Go Back Button ═══ */}
+            <button
+                onClick={() => navigate("/")}
+                className="absolute top-6 left-4 lg:top-8 lg:left-4 z-50 flex items-center gap-2 font-semibold text-xs uppercase tracking-wider text-[#958DA1] transition-all duration-300 hover:text-[#D2BBFF] cursor-pointer bg-transparent border-none outline-none group"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                Back to home
+            </button>
+
             {/* ═══ Animated Background Gradients ═══ */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-[5%] left-[10%] w-[400px] h-[400px] rounded-full bg-[#7C3AED]/8 blur-[120px] animate-[float_8s_ease-in-out_infinite]" />

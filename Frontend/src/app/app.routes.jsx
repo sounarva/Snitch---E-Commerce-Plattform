@@ -5,6 +5,7 @@ import CreateProduct from "../features/products/pages/createProduct";
 import ShowProduct from "../features/products/pages/ShowProduct";
 import Home from "../features/products/pages/Home";
 import Protected from "../shared/Protected";
+import SingleProduct from "../features/products/pages/SingleProduct";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     {
         path: "/seller/show-product",
         element: <Protected isSeller="seller"><ShowProduct /></Protected>
+    },
+    {
+        path: "/product/:id",
+        element: <SingleProduct />
     }
 ])
 
