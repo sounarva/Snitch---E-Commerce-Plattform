@@ -33,16 +33,34 @@ const PlusIcon = () => (
     </svg>
 );
 
+const SpinnerIcon = () => (
+    <svg className="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    </svg>
+);
+
+const LogoutIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+        <polyline points="16 17 21 12 16 7" />
+        <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+)
+
 // ─── Navbar Component ───────────────────────────────────────────────
 const Navbar = () => {
-    const { user } = useAuth();
+    const { user, logout, loading } = useAuth();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-    const handleLogout = () => {
-        dispatch(setUsers(null));
-        navigate("/login");
+    const handleLogout = async () => {
+        const res = await logout()
+        if (res.success) {
+            dispatch(setUsers(null))
+            navigate("/login")
+        }
     };
 
     // Extract username prefix from email
@@ -136,9 +154,8 @@ const Navbar = () => {
                         <button
                             id="nav-profile"
                             onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 cursor-pointer bg-transparent border-none outline-none ${
-                                isProfileOpen ? "text-[#D2BBFF] bg-[#7C3AED]/15" : "text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10"
-                            }`}
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 cursor-pointer bg-transparent border-none outline-none ${isProfileOpen ? "text-[#D2BBFF] bg-[#7C3AED]/15" : "text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10"
+                                }`}
                             title="Profile"
                         >
                             <ProfileIcon />
@@ -157,9 +174,8 @@ const Navbar = () => {
 
                         {/* Profile Dropdown */}
                         <div
-                            className={`absolute top-full right-0 mt-4 w-60 rounded-2xl border border-[#4A4455]/30 bg-[#0D0D14]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl origin-top transition-all duration-300 ${
-                                isProfileOpen ? "opacity-100 scale-100 translate-y-0 visible" : "opacity-0 scale-95 -translate-y-2 invisible"
-                            }`}
+                            className={`absolute top-full right-0 mt-4 w-60 rounded-2xl border border-[#4A4455]/30 bg-[#0D0D14]/90 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.5)] backdrop-blur-xl origin-top transition-all duration-300 ${isProfileOpen ? "opacity-100 scale-100 translate-y-0 visible" : "opacity-0 scale-95 -translate-y-2 invisible"
+                                }`}
                         >
                             {user && (
                                 <div className="mb-4 text-left">
@@ -176,14 +192,20 @@ const Navbar = () => {
 
                             <button
                                 onClick={handleLogout}
-                                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold text-[#958DA1] hover:text-[#ffb4ab] hover:bg-[#93000a]/20 transition-all duration-300"
+                                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold text-[#ffb4ab] bg-[#93000a]/20 transition-all duration-300 cursor-pointer"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                                    <polyline points="16 17 21 12 16 7" />
-                                    <line x1="21" y1="12" x2="9" y2="12" />
-                                </svg>
-                                Logout
+
+                                {loading ? (
+                                    <>
+                                        <SpinnerIcon />
+                                        Logging Out...
+                                    </>
+                                ) : (
+                                    <>
+                                        <LogoutIcon />
+                                        Logout
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js"
 import jwt from "jsonwebtoken"
 import { config } from "../config/config.js"
+import redisClient from "../config/cache.js"
 
 const sendToken = async (user, statusCode, res, message) => {
     const token = jwt.sign({
@@ -121,6 +122,33 @@ const getmeController = async (req, res) => {
     }
 }
 
+const logoutController = async (req, res) => {
+    try {
+        const token = req.cookies.token
+        if (!token) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "Token not found"
+                })
+        }
+
+        await redisClient.set(token, Date.now(), "EX", 7 * 24 * 60 * 60)
+        res.clearCookie("token")
+        return res.status(200)
+            .json({
+                success: true,
+                message: "User logged out successfully ✅"
+            })
+    } catch (err) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: err.message || "Internal server error"
+            })
+    }
+}
+
 const googleCallbackController = async (req, res) => {
     try {
         const profile = req.user
@@ -160,5 +188,6 @@ export {
     registerController,
     loginController,
     googleCallbackController,
-    getmeController
+    getmeController,
+    logoutController
 }

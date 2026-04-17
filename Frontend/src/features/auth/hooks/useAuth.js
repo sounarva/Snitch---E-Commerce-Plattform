@@ -1,6 +1,6 @@
 import { setUsers, setLoading, setError } from "../state/auth.slice"
 import { useDispatch, useSelector } from "react-redux"
-import { regsiterAPI, loginAPI, getmeAPI } from "../services/auth.api"
+import { regsiterAPI, loginAPI, getmeAPI, logoutAPI } from "../services/auth.api"
 
 const useAuth = () => {
     const dispatch = useDispatch()
@@ -54,13 +54,30 @@ const useAuth = () => {
         }
     }
 
+    const logout = async () => {
+        try {
+            dispatch(setLoading(true))
+            dispatch(setError(null))
+            const response = await logoutAPI()
+            dispatch(setUsers(null))
+            return { success: true }
+        } catch (error) {
+            const errMsg = error.response?.data?.message || error.message || "Logout failed"
+            dispatch(setError(errMsg))
+            return { success: false, error: errMsg }
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
+
     return {
         user,
         loading,
         error,
         register,
         login,
-        getme
+        getme,
+        logout
     }
 }
 
