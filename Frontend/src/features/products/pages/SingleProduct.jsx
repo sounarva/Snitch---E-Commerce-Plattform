@@ -4,35 +4,7 @@ import { useSelector } from "react-redux";
 import { useProducts } from "../hooks/useProducts";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
-
-/* ──────────────────────────────────────────────────────────
-   Named‑colour → CSS hex mapping for color swatches.
-   Add more entries as your catalogue grows.
-   ────────────────────────────────────────────────────────── */
-const COLOR_HEX_MAP = {
-    red: "#E53E3E",
-    blue: "#3B82F6",
-    green: "#38A169",
-    black: "#1A1A2E",
-    white: "#F7F7F7",
-    yellow: "#ECC94B",
-    pink: "#ED64A6",
-    purple: "#9F7AEA",
-    orange: "#ED8936",
-    navy: "#1E3A5F",
-    grey: "#A0AEC0",
-    gray: "#A0AEC0",
-    olive: "#808000",
-    maroon: "#800000",
-    teal: "#319795",
-    beige: "#F5F5DC",
-    brown: "#8B4513",
-    cream: "#FFF8DC",
-    coral: "#FF7F50",
-    lavender: "#B794F4",
-    charcoal: "#36454F",
-    indigo: "#4F46E5",
-};
+import { COLOR_HEX_MAP } from "../../../data/data";
 
 const getSwatchColor = (name) => COLOR_HEX_MAP[name?.toLowerCase()] || "#7C3AED";
 
@@ -400,7 +372,7 @@ const SingleProduct = () => {
                                     </div>
                                 )}
 
-                                {/* ── Variant Image Gallery (thumbnails below main image) ── */}
+                                {/* ── Variant Image Gallery (thumbnails below main image) ──
                                 {selectedVariantIndex !== null && activeImages.length > 1 && (
                                     <div style={{ animation: "fadeSlideIn 0.35s ease-out" }}>
                                         <p className="text-[#958DA1] text-xs uppercase tracking-widest mb-3 font-semibold flex items-center gap-2">
@@ -425,7 +397,7 @@ const SingleProduct = () => {
                                             ))}
                                         </div>
                                     </div>
-                                )}
+                                )} */}
                             </div>
                         )}
 

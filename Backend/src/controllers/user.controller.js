@@ -3,6 +3,13 @@ import jwt from "jsonwebtoken"
 import { config } from "../config/config.js"
 import redisClient from "../config/cache.js"
 
+/**
+ * @description Send token to user
+ * @param {Object} user - User object
+ * @param {number} statusCode - Status code
+ * @param {Object} res - Response object
+ * @param {string} message - Message
+ */
 const sendToken = async (user, statusCode, res, message) => {
     const token = jwt.sign({
         id: user._id
@@ -73,6 +80,11 @@ const registerController = async (req, res) => {
     }
 }
 
+/**
+ * @description Login user
+ * @route POST /api/v1/auth/login
+ * @access Public
+ */
 const loginController = async (req, res) => {
     try {
         const { email, password } = req.body
@@ -109,6 +121,11 @@ const loginController = async (req, res) => {
     }
 }
 
+/**
+ * @description Get current user
+ * @route GET /api/v1/auth/me
+ * @access Private
+ */
 const getmeController = async (req, res) => {
     try {
         const user = req.user
@@ -127,6 +144,11 @@ const getmeController = async (req, res) => {
     }
 }
 
+/**
+ * @description Logout user
+ * @route POST /api/v1/auth/logout
+ * @access Private
+ */
 const logoutController = async (req, res) => {
     try {
         const token = req.cookies.token
@@ -154,6 +176,11 @@ const logoutController = async (req, res) => {
     }
 }
 
+/**
+ * @description Google callback
+ * @route GET /api/v1/auth/google/callback
+ * @access Public
+ */
 const googleCallbackController = async (req, res) => {
     try {
         const profile = req.user

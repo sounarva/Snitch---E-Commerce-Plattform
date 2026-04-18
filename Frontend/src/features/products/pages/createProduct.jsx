@@ -3,136 +3,15 @@ import { useProducts } from "../hooks/useProducts";
 import { useSelector } from "react-redux";
 import { useToast } from "../../../shared/Toaster";
 import { useNavigate } from "react-router";
-
-// ─── SVG Icon Components ────────────────────────────────────────────
-const TagIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
-        <circle cx="7.5" cy="7.5" r=".5" fill="currentColor" />
-    </svg>
-);
-
-const TextIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 6.1H3" /><path d="M21 12.1H3" /><path d="M15.1 18H3" />
-    </svg>
-);
-
-const CurrencyIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
-        <path d="M12 18V6" />
-    </svg>
-);
-
-const UploadIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="17 8 12 3 7 8" />
-        <line x1="12" y1="3" x2="12" y2="15" />
-    </svg>
-);
-
-const ImageIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-        <circle cx="9" cy="9" r="2" />
-        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-    </svg>
-);
-
-const CloseIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 6 6 18" /><path d="m6 6 12 12" />
-    </svg>
-);
-
-const ChevronDownIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m6 9 6 6 6-6" />
-    </svg>
-);
-
-const SpinnerIcon = () => (
-    <svg className="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-    </svg>
-);
-
-const RocketIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-    </svg>
-);
-
-// ─── Custom Dropdown Component ──────────────────────────────────────
-const CurrencyDropdown = ({ value, onChange }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
-    const currencies = ["INR", "USD"];
-
-    const handleSelect = (currency) => {
-        onChange(currency);
-        setIsOpen(false);
-    };
-
-    // Close on outside click
-    const handleBlur = (e) => {
-        if (!dropdownRef.current?.contains(e.relatedTarget)) {
-            setIsOpen(false);
-        }
-    };
-
-    return (
-        <div className="relative h-full" ref={dropdownRef} onBlur={handleBlur}>
-            <button
-                type="button"
-                id="currency-dropdown-toggle"
-                onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center h-full gap-2 px-5 py-3 bg-[#1B1B20] rounded-xl text-[#E4E1E9] text-sm tracking-wide outline-none border transition-all duration-300 cursor-pointer min-w-[100px] justify-between
-                    ${isOpen
-                        ? "border-[#7C3AED]/60 shadow-[0_0_20px_rgba(124,58,237,0.15)] bg-[#1F1F25]"
-                        : "border-[#4A4455]/20 hover:border-[#4A4455]/40"
-                    }`}
-            >
-                <span className="font-medium">{value}</span>
-                <span className={`transition-transform duration-300 text-[#958DA1] ${isOpen ? "rotate-180" : ""}`}>
-                    <ChevronDownIcon />
-                </span>
-            </button>
-
-            {/* Dropdown Menu - Drops UP to prevent clipping at the bottom of the tall form */}
-            <div
-                className={`absolute top-full left-0 right-0 mt-2 bg-[#1B1B20] border border-[#4A4455]/30 rounded-xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-50 transition-all duration-300 origin-top
-                    ${isOpen
-                        ? "opacity-100 scale-y-100 pointer-events-auto"
-                        : "opacity-0 scale-y-95 pointer-events-none"
-                    }`}
-            >
-                {currencies.map((currency) => (
-                    <button
-                        type="button"
-                        key={currency}
-                        id={`currency-option-${currency.toLowerCase()}`}
-                        onClick={() => handleSelect(currency)}
-                        className={`w-full px-5 py-3 text-left text-sm tracking-wide transition-all duration-200 cursor-pointer
-                            ${value === currency
-                                ? "bg-[#7C3AED]/10 text-[#D2BBFF]"
-                                : "text-[#E4E1E9] hover:bg-[#4A4455]/15 hover:text-white"
-                            }`}
-                    >
-                        {currency}
-                    </button>
-                ))}
-            </div>
-        </div>
-    );
-};
+import TagIcon from "../../../svg/TagIcon";
+import TextIcon from "../../../svg/TextIcon";
+import CurrencyIcon from "../../../svg/CurrencyIcon";
+import UploadIcon from "../../../svg/UploadIcon";
+import ImageIcon from "../../../svg/ImageIcon";
+import CloseIcon from "../../../svg/CloseIcon";
+import SpinnerIcon from "../../../svg/SpinnerIcon";
+import RocketIcon from "../../../svg/RocketIcon";
+import CurrencyDropdown from "../components/CurrencyDropdown";
 
 
 // ─── Main CreateProduct Component ───────────────────────────────────

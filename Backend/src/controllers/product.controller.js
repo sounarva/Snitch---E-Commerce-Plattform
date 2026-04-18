@@ -1,6 +1,11 @@
 import uploadFile from "../services/storage.service.js";
 import productModel from "../models/product.model.js"
 
+/**
+ * @description Create a new product
+ * @route POST /api/v1/product/create-product
+ * @access Private
+ */
 const createProductController = async (req, res) => {
     try {
         const { title, description, priceAmt, priceCurrency } = req.body
@@ -42,6 +47,11 @@ const createProductController = async (req, res) => {
     }
 }
 
+/**
+ * @description Get seller products
+ * @route GET /api/v1/product/seller-products
+ * @access Private
+ */
 const getSellerProducts = async (req, res) => {
     try {
         const seller = req.user
@@ -64,6 +74,11 @@ const getSellerProducts = async (req, res) => {
     }
 }
 
+/**
+ * @description Get all products
+ * @route GET /api/v1/product/all-products
+ * @access Public
+ */
 const getAllProducts = async (req, res) => {
     try {
         const products = await productModel.find({})
@@ -82,6 +97,11 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+/**
+ * @description Get single product
+ * @route GET /api/v1/product/all-products/:id
+ * @access Public
+ */
 const getSingleProduct = async (req, res) => {
     try {
         const { id } = req.params
@@ -101,6 +121,11 @@ const getSingleProduct = async (req, res) => {
     }
 }
 
+/**
+ * @description Add product variant
+ * @route POST /api/v1/product/add-variant/:productId
+ * @access Private
+ */
 const addProductVariantController = async (req, res) => {
     try {
         const { productId } = req.params
