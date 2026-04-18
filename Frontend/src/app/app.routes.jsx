@@ -6,6 +6,7 @@ import ShowProduct from "../features/products/pages/ShowProduct";
 import Home from "../features/products/pages/Home";
 import Protected from "../shared/Protected";
 import SingleProduct from "../features/products/pages/SingleProduct";
+import AddVariants from "../features/products/pages/AddVariants";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
     {
         path: "/product/:id",
         element: <SingleProduct />
+    },
+    {
+        path: "/seller/add-variants/:id",
+        element: <Protected isSeller="seller"><AddVariants /></Protected>
     }
 ])
 

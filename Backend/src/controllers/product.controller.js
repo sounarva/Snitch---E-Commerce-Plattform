@@ -94,10 +94,58 @@ const getSingleProduct = async (req, res) => {
             })
     } catch (error) {
         return res.status(500)
-        .json({
-            success: false,
-            message: error.message || "Internal server error"
-        })
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
+    }
+}
+
+const addProductVariantController = async (req, res) => {
+    try {
+        const { productId } = req.params
+        const { color } = req.body
+        const sizes = JSON.parse(req.body.sizes)
+        const images = await Promise.all(
+            req.files.map(async (file) => {
+                return await uploadFile({
+                    fileBuffer: file.buffer,
+                    fileName: file.originalname,
+                    folder: "Snitch/products/variants"
+                })
+            })
+        )
+
+        const product = await productModel.findById(productId)
+        if (!product) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "Product not found"
+                })
+        }
+
+        const variant = {
+            color,
+            images,
+            sizes
+        }
+
+        product.variants.push(variant)
+        await product.save()
+
+        return res.status(200)
+            .json({
+                success: true,
+                message: "Variant added successfully",
+                product
+            })
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
     }
 }
 
@@ -105,5 +153,6 @@ export {
     createProductController,
     getSellerProducts,
     getAllProducts,
-    getSingleProduct
+    getSingleProduct,
+    addProductVariantController
 }

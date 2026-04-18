@@ -76,7 +76,7 @@ const ImageModal = ({ imageUrl, onClose }) => {
 };
 
 // ─── Product Card Row Component ─────────────────────────────────────
-const ProductRow = ({ product, onImageClick }) => {
+const ProductRow = ({ product, onImageClick, navigate }) => {
     const defaultImage = "https://via.placeholder.com/150/1B1B20/4A4455?text=No+Image";
     const imageUrl = product?.images?.[0]?.url || defaultImage;
     const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: product?.price?.currency || 'INR' });
@@ -111,11 +111,27 @@ const ProductRow = ({ product, onImageClick }) => {
                 </div>
             </div>
 
-            {/* Price Badge */}
-            <div className="shrink-0 text-right pl-4 border-l border-[#4A4455]/10 hidden sm:block">
-                <span className="inline-block px-4 py-1.5 rounded-lg bg-[#7C3AED]/10 border border-[#7C3AED]/20 text-[#D2BBFF] text-sm md:text-[15px] font-semibold tracking-wide shadow-[0_0_15px_rgba(124,58,237,0.1)]">
-                    {formattedPrice}
-                </span>
+            {/* Actions & Price */}
+            <div className="flex items-center gap-4 shrink-0 sm:flex">
+                <div className="w-[140px] flex justify-center">
+                    <button
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-transparent border border-[#7C3AED]/30 text-[#D2BBFF] text-xs font-semibold tracking-wide hover:bg-[#7C3AED]/10 hover:border-[#7C3AED]/50 hover:shadow-[0_0_15px_rgba(124,58,237,0.15)] transition-all duration-300 cursor-pointer"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/seller/add-variants/${product._id}`);
+                        }}
+                    >
+                        <PlusIcon />
+                        Add Variants
+                    </button>
+                </div>
+
+                {/* Price Badge */}
+                <div className="w-[100px] sm:w-[140px] flex justify-end pl-4 border-l border-[#4A4455]/20">
+                    <span className="inline-block px-4 py-1.5 rounded-lg bg-[#7C3AED]/10 border border-[#7C3AED]/20 text-[#D2BBFF] text-sm md:text-[15px] font-semibold tracking-wide shadow-[0_0_15px_rgba(124,58,237,0.1)] truncate max-w-full">
+                        {formattedPrice}
+                    </span>
+                </div>
             </div>
         </div>
     );
@@ -189,9 +205,10 @@ const ShowProduct = () => {
                     
                     {/* Header Row (Optional for premium feel) */}
                     {sellerProducts?.length > 0 && !loading && (
-                        <div className="hidden sm:flex text-[#958DA1] text-xs uppercase tracking-[0.15em] font-semibold mb-4 px-4 pb-3 border-b border-[#4A4455]/20">
+                        <div className="hidden sm:flex text-[#958DA1] text-xs uppercase tracking-[0.15em] font-semibold mb-4 px-4 pb-3 border-b border-[#4A4455]/20 gap-4">
                             <div className="flex-1">Product Details</div>
-                            <div className="w-32 text-right">Price</div>
+                            <div className="w-[130px] text-center">Actions</div>
+                            <div className="w-[140px] text-right">Price</div>
                         </div>
                     )}
 
@@ -208,7 +225,8 @@ const ShowProduct = () => {
                                     <ProductRow 
                                         key={product._id} 
                                         product={product} 
-                                        onImageClick={setSelectedImage} 
+                                        onImageClick={setSelectedImage}
+                                        navigate={navigate}
                                     />
                                 ))}
                             </div>
