@@ -134,6 +134,7 @@ const Navbar = () => {
 
                     {/* Nav Icons */}
                     <button
+                        onClick={() => navigate("/cart")}
                         id="nav-cart"
                         className="w-10 h-10 rounded-xl flex items-center justify-center text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/10 transition-all duration-300 cursor-pointer bg-transparent border-none outline-none"
                         title="Cart"

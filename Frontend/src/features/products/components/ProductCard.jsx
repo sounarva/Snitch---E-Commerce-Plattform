@@ -85,24 +85,6 @@ const ProductCard = ({ product, index = 0 }) => {
                     <span className="inline-block px-3.5 py-1.5 rounded-lg bg-[#7C3AED]/10 border border-[#7C3AED]/20 text-[#D2BBFF] text-sm font-semibold tracking-wide shadow-[0_0_15px_rgba(124,58,237,0.08)]">
                         {formatPrice(product?.price)}
                     </span>
-
-                    <button
-                        id={`add-to-cart-${product?._id || index}`}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            // Cart logic placeholder
-                        }}
-                        className="px-4 py-2 rounded-xl font-semibold text-[10px] uppercase tracking-widest text-white bg-linear-to-r from-[#7C3AED] to-[#3B82F6] transition-all duration-300 hover:shadow-[0_0_20px_rgba(124,58,237,0.35)] hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-1.5 relative overflow-hidden group/btn shrink-0"
-                    >
-                        {/* Shine sweep */}
-                        <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/15 to-transparent translate-x-[-200%] group-hover/btn:translate-x-[200%] transition-transform duration-700 ease-in-out" />
-
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 relative z-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" />
-                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-                        </svg>
-                        <span className="relative z-10">Add</span>
-                    </button>
                 </div>
             </div>
         </div>

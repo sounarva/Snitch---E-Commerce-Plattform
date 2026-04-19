@@ -5,6 +5,9 @@ import { useProducts } from "../hooks/useProducts";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import { COLOR_HEX_MAP } from "../../../data/data";
+import { useCart } from "../../cart/hooks/useCart";
+import { useToast } from "../../../shared/Toaster";
+import SpinnerIcon from "../../../svg/SpinnerIcon";
 
 const getSwatchColor = (name) => COLOR_HEX_MAP[name?.toLowerCase()] || "#7C3AED";
 
@@ -13,12 +16,15 @@ const SingleProduct = () => {
     const navigate = useNavigate();
     const { fetchSingleProduct, fetchAllProducts } = useProducts();
     const { singleProduct, allProducts, loading } = useSelector((state) => state.product);
+    const { showToast } = useToast();
+    const { addToCart } = useCart();
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     /* ─── Variant state ─── */
     const [selectedVariantIndex, setSelectedVariantIndex] = useState(null); // null = default (no variant)
     const [selectedSize, setSelectedSize] = useState(null);
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
 
     // Fetch product details
     useEffect(() => {
@@ -93,6 +99,25 @@ const SingleProduct = () => {
     const handleSizeSelect = (sizeName) => {
         setSelectedSize((prev) => (prev === sizeName ? null : sizeName));
     };
+
+    const handleAddToCart = async () => {
+        setIsAddingToCart(true);
+        const activeVariant = selectedVariantIndex !== null ? product.variants[selectedVariantIndex] : null;
+
+        const data = {
+            productId: product._id,
+            variantId: activeVariant ? activeVariant._id : null,
+            size: selectedSize,
+            quantity: 1
+        }
+        const res = await addToCart(data);
+        if (res.success) {
+            showToast("Item added to cart", true);
+        } else {
+            showToast(res.message || "Failed to add to cart", false);
+        }
+        setIsAddingToCart(false);
+    }
 
     // Pricing & Conversion
     const getFormattedPrices = (priceObj) => {
@@ -429,10 +454,18 @@ const SingleProduct = () => {
                         {/* Call to Action */}
                         <div className="flex flex-col gap-4 mt-2">
                             <button
-                                disabled={hasVariants && (!selectedSize || selectedStock === 0)}
-                                className="w-full py-4 rounded-xl font-bold text-sm tracking-widest text-white uppercase bg-linear-to-r from-[#7C3AED] to-[#3B82F6] shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_35px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[0_0_20px_rgba(124,58,237,0.3)]"
+                                onClick={() => handleAddToCart()}
+                                disabled={isAddingToCart || (hasVariants && (!selectedSize || selectedStock === 0))}
+                                className="w-full h-[52px] rounded-xl font-bold text-sm tracking-widest text-white uppercase bg-linear-to-r from-[#7C3AED] to-[#3B82F6] shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_35px_rgba(124,58,237,0.5)] transition-all duration-300 hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[0_0_20px_rgba(124,58,237,0.3)] flex items-center justify-center gap-3 relative"
                             >
-                                {hasVariants && !selectedSize ? "Select a Size" : "Add to Cart"}
+                                {isAddingToCart ? (
+                                    <>
+                                        <SpinnerIcon />
+                                        Adding...
+                                    </>
+                                ) : (
+                                    hasVariants && !selectedSize ? "Select a Size" : "Add to Cart"
+                                )}
                             </button>
                             <button
                                 disabled={hasVariants && (!selectedSize || selectedStock === 0)}
