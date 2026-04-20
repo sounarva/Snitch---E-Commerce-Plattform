@@ -33,6 +33,14 @@ if(!process.env.REDIS_PASSWORD){
     throw new Error("Please provide REDIS_PASSWORD in the .env file 😭")
 }
 
+if(!process.env.RAZORPAY_KEY_ID){
+    throw new Error("Please provide RAZORPAY_KEY_ID in the .env file 😭")
+}
+
+if(!process.env.RAZORPAY_SECRET){
+    throw new Error("Please provide RAZORPAY_SECRET in the .env file 😭")
+}
+
 
 export const config = {
     MONGO_URL : process.env.MONGO_URL,
@@ -42,5 +50,7 @@ export const config = {
     IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT,
-    REDIS_PASSWORD: process.env.REDIS_PASSWORD
+    REDIS_PASSWORD: process.env.REDIS_PASSWORD,
+    RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
+    RAZORPAY_SECRET: process.env.RAZORPAY_SECRET
 }

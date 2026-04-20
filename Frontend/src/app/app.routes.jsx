@@ -8,6 +8,7 @@ import Protected from "../shared/Protected";
 import SingleProduct from "../features/products/pages/SingleProduct";
 import AddVariants from "../features/products/pages/AddVariants";
 import Cart from "../features/cart/pages/Cart";
+import Order from "../features/order/pages/Order";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
     {
         path: "/cart",
         element: <Cart />
+    },
+    {
+        path: "/order",
+        element: <Order />
     }
 ])
 
