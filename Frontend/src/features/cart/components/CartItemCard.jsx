@@ -2,24 +2,36 @@ import { useState } from "react";
 import TrashIcon from "../../../svg/TrashIcon";
 import MinusIcon from "../../../svg/MinusIcon";
 import PlusIcon from "../../../svg/PlusIcon";
+import { useToast } from "../../../shared/Toaster";
 
 const CartItemCard = ({ item, index, updateCart, removeFromCart }) => {
     const [isPressed, setIsPressed] = useState(null);
+    const { showToast } = useToast();
 
-    const handleButtonClick = (action) => {
+    const handleButtonClick = async (action) => {
+        console.log(item);
         setIsPressed(action);
         if (action === "plus") {
-            updateCart({
+            const res = await updateCart({
                 cartItemId: item._id,
                 quantity: item.quantity + 1
             })
+            if (!res.success) {
+                showToast(res.message, false);
+            }
         } else if (action === "minus") {
-            updateCart({
+            const res = await updateCart({
                 cartItemId: item._id,
                 quantity: item.quantity - 1
             })
+            if (!res.success) {
+                showToast(res.message, false);
+            }
         } else if (action === "delete") {
-            removeFromCart({ cartItemId: item._id })
+            const res = await removeFromCart({ cartItemId: item._id })
+            if (!res.success) {
+                showToast(res.message, false);
+            }
         }
         setTimeout(() => setIsPressed(null), 300);
     };
@@ -111,8 +123,8 @@ const CartItemCard = ({ item, index, updateCart, removeFromCart }) => {
                         onClick={() => handleButtonClick("minus")}
                         disabled={item.quantity <= 1}
                         className={`w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-300 ${item.quantity <= 1
-                                ? "text-[#4A4455] cursor-not-allowed opacity-50"
-                                : "text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/15 active:scale-90 cursor-pointer"
+                            ? "text-[#4A4455] cursor-not-allowed opacity-50"
+                            : "text-[#958DA1] hover:text-[#D2BBFF] hover:bg-[#7C3AED]/15 active:scale-90 cursor-pointer"
                             } ${isPressed === "minus" ? "scale-90 bg-[#7C3AED]/20" : ""}`}
                     >
                         <MinusIcon />

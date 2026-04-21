@@ -112,14 +112,14 @@ export const verifyPaymentController = async (req, res) => {
             return {
                 product: product._id,
                 variant: item.variant || undefined,
-                size: item.size || "N/A",
+                size: item.size || "",
                 quantity: item.quantity,
 
                 // 💎 snapshot
                 title: product.title,
                 price: productPrice,
                 image: variant?.images?.[0]?.url || product.images?.[0]?.url || "",
-                color: variant?.color || "N/A"
+                color: variant?.color || ""
             };
         });
 

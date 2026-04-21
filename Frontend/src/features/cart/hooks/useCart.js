@@ -12,8 +12,8 @@ export const useCart = () => {
             dispatch(setCart(response.cart))
             return response
         } catch (error) {
-            dispatch(setError(error.message))
-            return { success: false, message: error.message }
+            dispatch(setError(error.response.data.message))
+            return { success: false, message: error.response.data.message }
         } finally {
             dispatch(setLoading(false))
         }
@@ -26,8 +26,8 @@ export const useCart = () => {
             dispatch(setCart(response.cart))
             return response
         } catch (error) {
-            dispatch(setError(error.message))
-            return { success: false, message: error.message }
+            dispatch(setError(error.response.data.message))
+            return { success: false, message: error.response.data.message }
         } finally {
             dispatch(setLoading(false))
         }
@@ -40,8 +40,8 @@ export const useCart = () => {
             dispatch(setCart(response.cart))
             return response
         } catch (error) {
-            dispatch(setError(error.message))
-            return { success: false, message: error.message }
+            dispatch(setError(error.response.data.message))
+            return { success: false, message: error.response.data.message }
         } finally {
             dispatch(setLoading(false))
         }
@@ -54,8 +54,8 @@ export const useCart = () => {
             dispatch(setCart(response.cart))
             return response
         } catch (error) {
-            dispatch(setError(error.message))
-            return { success: false, message: error.message }
+            dispatch(setError(error.response.data.message))
+            return { success: false, message: error.response.data.message }
         } finally {
             dispatch(setLoading(false))
         }

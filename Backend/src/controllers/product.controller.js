@@ -131,15 +131,18 @@ const addProductVariantController = async (req, res) => {
         const { productId } = req.params
         const { color } = req.body
         const sizes = JSON.parse(req.body.sizes)
-        const images = await Promise.all(
-            req.files.map(async (file) => {
-                return await uploadFile({
-                    fileBuffer: file.buffer,
-                    fileName: file.originalname,
-                    folder: "Snitch/products/variants"
+        let images = []
+        if (req.files.length > 0) {
+            images = await Promise.all(
+                req.files.map(async (file) => {
+                    return await uploadFile({
+                        fileBuffer: file.buffer,
+                        fileName: file.originalname,
+                        folder: "Snitch/products/variants"
+                    })
                 })
-            })
-        )
+            )
+        }
 
         const product = await productModel.findById(productId)
         if (!product) {
@@ -150,19 +153,43 @@ const addProductVariantController = async (req, res) => {
                 })
         }
 
-        const variant = {
-            color,
-            images,
-            sizes
+        const existingVariantIndex = product.variants.findIndex(v => v.color === color)
+
+        if (existingVariantIndex !== -1) {
+            const existingVariant = product.variants[existingVariantIndex]
+
+            if (images.length > 0) {
+                existingVariant.images.push(...images)
+            }
+
+            if (sizes && sizes.length > 0) {
+                sizes.forEach(newSize => {
+                    const existingSizeIndex = existingVariant.sizes.findIndex(s => s.size === newSize.size)
+                    if (existingSizeIndex !== -1) {
+                        existingVariant.sizes[existingSizeIndex].stock += Number(newSize.stock)
+                    } else {
+                        existingVariant.sizes.push({
+                            size: newSize.size,
+                            stock: Number(newSize.stock)
+                        })
+                    }
+                })
+            }
+        } else {
+            const variant = {
+                color,
+                images,
+                sizes
+            }
+            product.variants.push(variant)
         }
 
-        product.variants.push(variant)
         await product.save()
 
         return res.status(200)
             .json({
                 success: true,
-                message: "Variant added successfully",
+                message: "Variant added/updated successfully",
                 product
             })
     } catch (error) {

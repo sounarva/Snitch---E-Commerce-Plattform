@@ -144,12 +144,16 @@ const Order = () => {
                             {item.title}
                           </h3>
                           <div className="flex flex-wrap gap-2 mt-1">
-                            <span className="bg-[#ffffff08] border border-[#ffffff0a] px-2.5 py-1 rounded-md text-xs text-gray-400 font-medium tracking-wide">
-                              Color: <span className="text-gray-200">{item.color}</span>
-                            </span>
-                            <span className="bg-[#ffffff08] border border-[#ffffff0a] px-2.5 py-1 rounded-md text-xs text-gray-400 font-medium tracking-wide">
-                              Size: <span className="text-gray-200">{item.size}</span>
-                            </span>
+                            {item.color !== "" && (
+                              <span className="bg-[#ffffff08] border border-[#ffffff0a] px-2.5 py-1 rounded-md text-xs text-gray-400 font-medium tracking-wide">
+                                Color: <span className="text-gray-200">{item.color}</span>
+                              </span>
+                            )}
+                            {item.size !== "" && (
+                              <span className="bg-[#ffffff08] border border-[#ffffff0a] px-2.5 py-1 rounded-md text-xs text-gray-400 font-medium tracking-wide">
+                                Size: <span className="text-gray-200">{item.size}</span>
+                              </span>
+                            )}
                           </div>
                         </div>
                         

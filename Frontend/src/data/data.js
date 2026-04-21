@@ -27,6 +27,7 @@ export const COLORS = [
     { name: "Black", hex: "#000000" },
     { name: "White", hex: "#FFFFFF" },
     { name: "Navy Blue", hex: "#1B2A4A" },
+    { name: "Blue", hex: "#3B82F6" },
     { name: "Red", hex: "#DC2626" },
     { name: "Grey", hex: "#6B7280" },
     { name: "Olive", hex: "#556B2F" },

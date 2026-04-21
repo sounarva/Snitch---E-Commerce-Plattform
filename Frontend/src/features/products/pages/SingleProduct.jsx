@@ -25,6 +25,11 @@ const SingleProduct = () => {
     const [selectedVariantIndex, setSelectedVariantIndex] = useState(null); // null = default (no variant)
     const [selectedSize, setSelectedSize] = useState(null);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [localStockDecrements, setLocalStockDecrements] = useState({});
+
+    useEffect(() => {
+        setLocalStockDecrements({});
+    }, [singleProduct?._id]);
 
     // Fetch product details
     useEffect(() => {
@@ -75,8 +80,13 @@ const SingleProduct = () => {
     const selectedStock = useMemo(() => {
         if (!selectedSize || selectedVariantIndex === null) return null;
         const sizeObj = activeSizes.find((s) => s.size === selectedSize);
-        return sizeObj ? sizeObj.stock : null;
-    }, [selectedSize, selectedVariantIndex, activeSizes]);
+        if (sizeObj) {
+            const variantId = variants[selectedVariantIndex]?._id;
+            const decrement = (variantId && localStockDecrements[`${variantId}_${selectedSize}`]) || 0;
+            return Math.max(0, sizeObj.stock - decrement);
+        }
+        return null;
+    }, [selectedSize, selectedVariantIndex, activeSizes, localStockDecrements, variants]);
 
     /* ─── Image navigation ─── */
     const nextImage = () => setCurrentImageIndex((prev) => (prev + 1) % activeImages.length);
@@ -113,6 +123,12 @@ const SingleProduct = () => {
         const res = await addToCart(data);
         if (res.success) {
             showToast("Item added to cart", true);
+            if (activeVariant) {
+                setLocalStockDecrements((prev) => ({
+                    ...prev,
+                    [`${activeVariant._id}_${selectedSize}`]: (prev[`${activeVariant._id}_${selectedSize}`] || 0) + 1
+                }));
+            }
         } else {
             showToast(res.message || "Failed to add to cart", false);
         }
@@ -360,8 +376,11 @@ const SingleProduct = () => {
                                         </p>
                                         <div className="flex items-center gap-2.5 flex-wrap">
                                             {activeSizes.map((sizeObj) => {
+                                                const variantId = variants[selectedVariantIndex]?._id;
+                                                const decrement = (variantId && localStockDecrements[`${variantId}_${sizeObj.size}`]) || 0;
+                                                const currentStock = Math.max(0, sizeObj.stock - decrement);
                                                 const isActive = selectedSize === sizeObj.size;
-                                                const outOfStock = sizeObj.stock === 0;
+                                                const outOfStock = currentStock === 0;
                                                 return (
                                                     <button
                                                         key={sizeObj._id}
