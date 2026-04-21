@@ -34,7 +34,7 @@ const CreateProduct = () => {
     const [isDragOver, setIsDragOver] = useState(false);
     const [imageWarning, setImageWarning] = useState("");
 
-    const MAX_IMAGES = 7;
+    const MAX_IMAGES = 6;
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -126,7 +126,7 @@ const CreateProduct = () => {
         const result = await createProduct(productData);
 
         if (result) {
-            showToast("Product created successfully!", true);
+            showToast("Product created successfully", true);
             setFormData({
                 title: "",
                 description: "",
@@ -306,7 +306,7 @@ const CreateProduct = () => {
                             onDrop={handleDrop}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
-                            className={`relative flex flex-col items-center justify-center gap-3 py-8 px-6 rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer group shrink-0
+                            className={`relative flex flex-col items-center justify-center gap-1.5 py-3 px-4 rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer group shrink-0
                                 ${isDragOver
                                     ? "border-[#7C3AED]/60 bg-[#7C3AED]/5 shadow-[0_0_30px_rgba(124,58,237,0.15)]"
                                     : images.length >= MAX_IMAGES
@@ -352,9 +352,9 @@ const CreateProduct = () => {
                         )}
 
                         {/* ─── Image Preview Grid ─── */}
-                        <div className="flex-1 mt-4 overflow-y-auto scrollbar-thin pr-2 min-h-0" style={{ scrollbarWidth: "thin", scrollbarColor: "#4A4455 transparent" }}>
+                        <div className="flex-1 mt-3 overflow-y-auto scrollbar-thin pr-1 min-h-0" style={{ scrollbarWidth: "thin", scrollbarColor: "#4A4455 transparent" }}>
                             {images.length > 0 ? (
-                                <div className="grid grid-cols-3 gap-3 pb-3">
+                                <div className="grid grid-cols-5 gap-2 pb-3">
                                     {images.map((img, index) => (
                                         <div
                                             key={img.id}

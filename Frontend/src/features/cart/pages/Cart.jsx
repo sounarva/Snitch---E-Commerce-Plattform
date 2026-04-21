@@ -64,7 +64,7 @@ const Cart = () => {
                 handler: async function (response) {
                     const verifyRes = await verifyPayment(response);
                     if (verifyRes.success) {
-                        showToast("Payment Successful!", true);
+                        showToast("Payment Successful", true);
                         setTimeout(() => {
                             navigate("/order");
                         }, 2000);
