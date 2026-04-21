@@ -8,7 +8,7 @@ import productModel from "../models/product.model.js"
  */
 const createProductController = async (req, res) => {
     try {
-        const { title, description, priceAmt, priceCurrency } = req.body
+        const { title, description, priceAmt, priceCurrency, category } = req.body
         const seller = req.user
 
         const images = await Promise.all(
@@ -16,7 +16,7 @@ const createProductController = async (req, res) => {
                 return await uploadFile({
                     fileBuffer: file.buffer,
                     fileName: file.originalname,
-                    folder: "Snitch/products"
+                    folder: `Snitch/products/${category}`
                 })
             })
         )
@@ -29,6 +29,7 @@ const createProductController = async (req, res) => {
                 currency: priceCurrency
             },
             images,
+            category,
             seller: seller._id
         })
 

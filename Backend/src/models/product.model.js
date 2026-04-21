@@ -36,6 +36,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
     seller: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

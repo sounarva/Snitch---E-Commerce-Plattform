@@ -28,6 +28,7 @@ export const COLORS = [
     { name: "White", hex: "#FFFFFF" },
     { name: "Navy Blue", hex: "#1B2A4A" },
     { name: "Blue", hex: "#3B82F6" },
+    { name: "Purple", hex: "#9F7AEA" },
     { name: "Red", hex: "#DC2626" },
     { name: "Grey", hex: "#6B7280" },
     { name: "Olive", hex: "#556B2F" },
@@ -35,6 +36,39 @@ export const COLORS = [
     { name: "Beige", hex: "#D4B896" },
     { name: "Brown", hex: "#7B4B3A" },
     { name: "Pink", hex: "#EC4899" },
+    { name: "Yellow", hex: "#ECC94B" },
+    { name: "Orange", hex: "#ED8936" },
+    { name: "Navy", hex: "#1E3A5F" },
+    { name: "Teal", hex: "#319795" },
+    { name: "Cream", hex: "#FFF8DC" },
+    { name: "Coral", hex: "#FF7F50" },
+    { name: "Lavender", hex: "#B794F4" },
+    { name: "Charcoal", hex: "#36454F" },
+    { name: "Indigo", hex: "#4F46E5" },
+];
+
+export const CATEGORIES = [
+    "Baggy Jeans",
+    "Denim Jeans",
+    "T-Shirts",
+    "Shirts",
+    "Full Sleeve Shirts",
+    "Shorts",
+    "Trousers",
+    "Underwear",
+    "Jackets",
+    "Sweaters",
+    "Hoodies",
+    "Outerwear",
+    "Accessories",
+    "Dresses",
+    "Tops",
+    "Sleeveless Tops",
+    "Co-ords",
+    "Skirts",
+    "Leggings",
+    "Kurtis",
+    "Sleeveless Kurtis"
 ];
 
 export const CLOTHING_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];

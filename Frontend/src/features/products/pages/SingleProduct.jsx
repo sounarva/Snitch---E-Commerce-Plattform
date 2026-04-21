@@ -157,9 +157,14 @@ const SingleProduct = () => {
 
     const { main: mainPrice, sub: subPrice } = getFormattedPrices(product?.price);
 
-    // Other Products (filter out current)
-    const otherProducts = allProducts.filter((p) => p._id !== id).slice(0, 10);
-
+    // Other Products (filter out current, matching category)
+    const otherProducts = useMemo(() => {
+        let filtered = allProducts.filter((p) => p._id !== id);
+        if (product?.category) {
+            filtered = filtered.filter((p) => p.category === product.category);
+        }
+        return filtered.slice(0, 10);
+    }, [allProducts, id, product?.category]);
 
     // Loader State
     if (loading && !product) {
@@ -283,6 +288,11 @@ const SingleProduct = () => {
                             {hasVariants && (
                                 <span className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold text-[#93C5FD] bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-full">
                                     {variants.length} {variants.length === 1 ? "Variant" : "Variants"}
+                                </span>
+                            )}
+                            {product?.category && (
+                                <span className="px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold text-[#34D399] bg-[#10B981]/10 border border-[#10B981]/20 rounded-full">
+                                    {product.category}
                                 </span>
                             )}
                         </div>

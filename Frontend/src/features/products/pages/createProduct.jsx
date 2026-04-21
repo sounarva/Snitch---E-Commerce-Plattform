@@ -12,7 +12,8 @@ import CloseIcon from "../../../svg/CloseIcon";
 import SpinnerIcon from "../../../svg/SpinnerIcon";
 import RocketIcon from "../../../svg/RocketIcon";
 import CurrencyDropdown from "../components/CurrencyDropdown";
-
+import CategoryDropdown from "../components/CategoryDropdown";
+import { CATEGORIES } from "../../../data/data";
 
 // ─── Main CreateProduct Component ───────────────────────────────────
 const CreateProduct = () => {
@@ -25,6 +26,7 @@ const CreateProduct = () => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
+        category: "",
         amount: "",
         currency: "INR",
     });
@@ -113,6 +115,7 @@ const CreateProduct = () => {
 
         const productData = new FormData();
         productData.append("title", formData.title);
+        productData.append("category", formData.category);
         productData.append("description", formData.description);
         productData.append("priceAmt", formData.amount);
         productData.append("priceCurrency", formData.currency);
@@ -127,6 +130,7 @@ const CreateProduct = () => {
             setFormData({
                 title: "",
                 description: "",
+                category: "",
                 amount: "",
                 currency: "INR",
             });
@@ -188,7 +192,7 @@ const CreateProduct = () => {
                     </div>
 
                     {/* Inputs Section */}
-                    <div className="flex flex-col gap-10 mt-6 flex-1 justify-center">
+                    <div className="flex flex-col gap-6 mt-6 flex-1 justify-center">
                         {/* ─── Product Title ─── */}
                         <div>
                             <label htmlFor="product-title" className="block text-[#958DA1] text-xs uppercase tracking-[0.15em] mb-2 font-semibold ml-1">
@@ -209,6 +213,18 @@ const CreateProduct = () => {
                                     className="w-full pl-12 pr-4 py-3 bg-[#1B1B20] rounded-xl text-[#E4E1E9] placeholder-[#4A4455] text-sm tracking-wide outline-none border border-[#4A4455]/20 transition-all duration-300 focus:border-[#7C3AED]/60 focus:shadow-[0_0_20px_rgba(124,58,237,0.15)] focus:bg-[#1F1F25] hover:border-[#4A4455]/40"
                                 />
                             </div>
+                        </div>
+
+                        {/* ─── Product Category ─── */}
+                        <div>
+                            <label htmlFor="product-category" className="block text-[#958DA1] text-xs uppercase tracking-[0.15em] mb-2 font-semibold ml-1">
+                                Category
+                            </label>
+                            <CategoryDropdown
+                                value={formData.category}
+                                onChange={(val) => setFormData({ ...formData, category: val })}
+                                options={CATEGORIES}
+                            />
                         </div>
 
                         {/* ─── Product Description ─── */}
