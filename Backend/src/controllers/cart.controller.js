@@ -27,6 +27,12 @@ const getFormattedCart = async (cart) => {
     return formattedCartItems
 }
 
+
+/**
+ * @description Add to cart
+ * @route POST /api/v1/cart/add-to-cart
+ * @access Private
+ */
 export const addToCartController = async (req, res) => {
     try {
         const userID = req.user.id || req.user._id
@@ -125,6 +131,11 @@ export const addToCartController = async (req, res) => {
     }
 }
 
+/**
+ * @description Fetch cart items
+ * @route GET /api/v1/cart/fetch-cart
+ * @access Private
+ */
 export const fetchCartController = async (req, res) => {
     try {
         const userID = req.user.id || req.user._id
@@ -156,6 +167,11 @@ export const fetchCartController = async (req, res) => {
     }
 }
 
+/**
+ * @description Update quantity of an item in cart
+ * @route PUT /api/v1/cart/update-cart
+ * @access Private
+ */
 export const updateCartController = async (req, res) => {
     try {
         const userID = req.user.id || req.user._id
@@ -233,6 +249,12 @@ export const updateCartController = async (req, res) => {
     }
 }
 
+
+/**
+ * @description Remove item from cart
+ * @route DELETE /api/v1/cart/remove-from-cart
+ * @access Private
+ */
 export const removeFromCartController = async (req, res) => {
     try {
         const userID = req.user.id || req.user._id

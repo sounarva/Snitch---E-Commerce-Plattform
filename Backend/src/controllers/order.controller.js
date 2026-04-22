@@ -4,6 +4,11 @@ import cartModel from "../models/cart.model.js";
 import crypto from "crypto";
 import { config } from "../config/config.js";
 
+/**
+ * @description Create order
+ * @route POST /api/v1/order/create-order
+ * @access Private
+ */
 export const createOrderController = async (req, res) => {
     try {
         const userId = req.user.id
@@ -60,6 +65,11 @@ export const createOrderController = async (req, res) => {
     }
 }
 
+/**
+ * @description Verify payment
+ * @route POST /api/v1/order/verify-payment
+ * @access Private
+ */
 export const verifyPaymentController = async (req, res) => {
     try {
         const userId = req.user.id
@@ -150,6 +160,11 @@ export const verifyPaymentController = async (req, res) => {
     }
 }
 
+/**
+ * @description Get all orders
+ * @route GET /api/v1/order/
+ * @access Private
+ */
 export const getOrdersController = async (req, res) => {
     try {
         const userId = req.user.id;

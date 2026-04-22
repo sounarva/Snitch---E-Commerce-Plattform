@@ -29,3 +29,8 @@ export const addProductVariant = async (productId, data) => {
     const response = await productsApiInstance.post(`/add-variant/${productId}`, data)
     return response.data
 }
+
+export const searchProducts = async (query) => {
+    const response = await productsApiInstance.get(`/search-products?q=${query}`)
+    return response.data
+}

@@ -395,3 +395,61 @@
     opacity: 0.1;
   }
 }
+
+/* ─── Search Bar & Results Dropdown ─── */
+@keyframes searchDropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-search-dropdown {
+  animation: searchDropdownFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.search-glass {
+  background: rgba(10, 10, 15, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.search-input-glow:focus {
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.2), 0 0 0 1px rgba(124, 58, 237, 0.4);
+}
+
+.search-result-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-result-item:hover {
+  background: rgba(124, 58, 237, 0.1);
+  transform: translateX(4px);
+}
+
+.search-result-item:hover .search-result-image {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+}
+
+/* Custom Scrollbar for Search Dropdown */
+.search-results-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.search-results-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search-results-container::-webkit-scrollbar-thumb {
+  background: rgba(149, 141, 161, 0.3);
+  border-radius: 10px;
+}
+
+.search-results-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(149, 141, 161, 0.5);
+}
