@@ -208,46 +208,108 @@ const addProductVariantController = async (req, res) => {
  * @route GET /api/v1/product/search
  * @access Public
  */
-const searchProductsController = async(req , res) => {
+const searchProductsController = async (req, res) => {
     try {
         const query = req.query.q
-        if(!query || query.trim().length === 0){
+        if (!query || query.trim().length === 0) {
             return res.status(400)
-            .json({
-                success: false,
-                message: "Query is required"
-            })
+                .json({
+                    success: false,
+                    message: "Query is required"
+                })
         }
 
         const products = await productModel.find({
-            $or:[
-                {title: {$regex : query , $options:"i"}},
-                {description: {$regex : query , $options:"i"}}
+            $or: [
+                { title: { $regex: query, $options: "i" } },
+                { description: { $regex: query, $options: "i" } }
             ]
         })
-        .limit(5)
-        .select("title images")
+            .limit(5)
+            .select("title images")
 
         return res.status(200)
-        .json({
-            success: true,
-            message: "Products fetched successfully",
-            products
-        })
+            .json({
+                success: true,
+                message: "Products fetched successfully",
+                products
+            })
     } catch (error) {
         return res.status(500)
-        .json({
-            success: false,
-            message: error.message || "Internal server error"
-        })
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
     }
 }
 
+/**
+ * @description Edit product
+ * @route PUT /api/v1/product/edit/:productId
+ * @access Private
+ */
+const editProductController = async (req, res) => {
+    try {
+        const { productId } = req.params
+        console.log(req.body)
+        const { title, description, priceAmt, priceCurrency, category } = req.body
+        const seller = req.user
+
+        const product = await productModel.findOne(
+            {
+                _id: productId,
+                seller: seller._id
+            }
+        )
+
+        if (!product) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "Product not found"
+                })
+        }
+
+        if (title) {
+            product.title = title
+        }
+        if (description) {
+            product.description = description
+        }
+        if (priceAmt && priceCurrency) {
+            product.price = {
+                amount: priceAmt,
+                currency: priceCurrency
+            }
+        }
+        if (category) {
+            product.category = category
+        }
+
+        await product.save()
+
+        return res.status(200)
+            .json({
+                success: true,
+                message: "Product updated successfully",
+                product
+            })
+
+
+    } catch (error) {
+        return res.status(500)
+            .json({
+                success: false,
+                message: error.message || "Internal server error"
+            })
+    }
+}
 export {
     createProductController,
     getSellerProducts,
     getAllProducts,
     getSingleProduct,
     addProductVariantController,
-    searchProductsController
+    searchProductsController,
+    editProductController
 }

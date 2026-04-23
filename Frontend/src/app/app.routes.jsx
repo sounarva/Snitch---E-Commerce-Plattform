@@ -9,6 +9,7 @@ import SingleProduct from "../features/products/pages/SingleProduct";
 import AddVariants from "../features/products/pages/AddVariants";
 import Cart from "../features/cart/pages/Cart";
 import Order from "../features/order/pages/Order";
+import EditProduct from "../features/products/pages/EditProduct";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
     {
         path: "/order",
         element: <Order />
+    },
+    {
+        path: "/seller/edit-product/:id",
+        element: <Protected isSeller="seller"><EditProduct /></Protected>
     }
 ])
 

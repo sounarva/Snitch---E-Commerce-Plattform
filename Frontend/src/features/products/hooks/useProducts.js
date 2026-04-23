@@ -1,4 +1,4 @@
-import { createSellerProduct, getAllProducts, getSellerProducts, getSingleProduct, addProductVariant, searchProducts as searchProductsApi } from "../services/products.api"
+import { createSellerProduct, getAllProducts, getSellerProducts, getSingleProduct, addProductVariant, searchProducts as searchProductsApi, editProduct } from "../services/products.api"
 import { useDispatch } from "react-redux"
 import { setLoading, setError, setSellerProducts, setAllProducts, setSingleProduct } from "../state/product.slice"
 
@@ -92,12 +92,27 @@ export const useProducts = () => {
         }
     }
 
+    const editProductDetails = async (productId, data) => {
+        try {
+            dispatch(setLoading(true))
+            dispatch(setError(null))
+            const response = await editProduct(productId, data)
+            return { success: true, message: response?.message || "Product updated successfully" }
+        } catch (error) {
+            dispatch(setError(error.message))
+            return { success: false, message: error.message || "Failed to update product" }
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
+
     return {
         createProduct,
         fetchSellerProducts,
         fetchAllProducts,
         fetchSingleProduct,
         addVariant,
-        searchProducts
+        searchProducts,
+        editProductDetails
     }
 }

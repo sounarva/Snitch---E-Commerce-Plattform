@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ChevronDownIcon from "../../../svg/ChevronDownIcon";
 
-const CategoryDropdown = ({ value, onChange, options }) => {
+const CategoryDropdown = ({ value, onChange, options, direction = "top" }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -42,7 +42,7 @@ const CategoryDropdown = ({ value, onChange, options }) => {
 
             {/* Dropdown Menu */}
             <div
-                className={`absolute top-full left-0 right-0 mt-2 bg-[#1B1B20] border border-[#4A4455]/30 rounded-xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-50 transition-all duration-300 origin-top max-h-[240px] overflow-y-auto
+                className={`absolute left-0 right-0 ${direction === "bottom" ? "bottom-full mb-2" : "top-full mt-2"} bg-[#1B1B20] border border-[#4A4455]/30 rounded-xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-50 transition-all duration-300 origin-top max-h-[240px] overflow-y-auto
                     ${isOpen
                         ? "opacity-100 scale-y-100 pointer-events-auto"
                         : "opacity-0 scale-y-95 pointer-events-none"

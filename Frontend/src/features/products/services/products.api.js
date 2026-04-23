@@ -34,3 +34,8 @@ export const searchProducts = async (query) => {
     const response = await productsApiInstance.get(`/search-products?q=${query}`)
     return response.data
 }
+
+export const editProduct = async (productId, data) => {
+    const response = await productsApiInstance.put(`/edit-product/${productId}`, data)
+    return response.data
+}
