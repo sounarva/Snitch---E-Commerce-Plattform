@@ -33,12 +33,12 @@ const Order = () => {
 
   if (loading && orders.length === 0) {
     return (
-        <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center font-[Poppins]">
-            <div className="flex flex-col items-center gap-4">
-                <div className="w-10 h-10 border-4 border-[#7C3AED]/20 border-t-[#D2BBFF] rounded-full animate-spin" />
-                <span className="text-[#958DA1] text-sm tracking-widest uppercase">Loading Orders...</span>
-            </div>
+      <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center font-[Poppins]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-[#7C3AED]/20 border-t-[#D2BBFF] rounded-full animate-spin" />
+          <span className="text-[#958DA1] text-sm tracking-widest uppercase">Loading Orders...</span>
         </div>
+      </div>
     );
   }
 
@@ -50,11 +50,11 @@ const Order = () => {
       </div>
 
       {/* ─── Animated Background Blobs ─── */}
-      <div 
+      <div
         className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[#7C3AED]/10 rounded-full blur-[120px] pointer-events-none"
         style={{ animation: 'orderBlobPulse 10s ease-in-out infinite' }}
       />
-      <div 
+      <div
         className="fixed bottom-[-10%] right-[-10%] w-[30vw] h-[30vw] bg-[#3B82F6]/10 rounded-full blur-[100px] pointer-events-none"
         style={{ animation: 'orderBlobPulse 12s ease-in-out infinite reverse' }}
       />
@@ -76,10 +76,10 @@ const Order = () => {
             {/* ─── Orders List Section ─── */}
             <div className="flex flex-col gap-8 grow">
               {orders.map((order, orderIndex) => (
-                <div 
+                <div
                   key={order._id}
                   className="bg-[#13111C]/80 backdrop-blur-xl border border-[#ffffff0a] rounded-2xl p-6 md:p-8 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.15)] group"
-                  style={{ 
+                  style={{
                     animation: 'orderFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     animationDelay: `${orderIndex * 0.15 + 0.1}s`,
                     opacity: 0
@@ -89,7 +89,7 @@ const Order = () => {
                   <div className="flex flex-wrap gap-4 items-center justify-between border-b border-[#ffffff0a] pb-5 mb-5 relative">
                     {/* Subtle hover glow line */}
                     <div className="absolute bottom-0 left-0 h-px w-0 bg-linear-to-r from-purple-500 to-blue-500 transition-all duration-500 group-hover:w-full opacity-50" />
-                    
+
                     <div className="flex items-center gap-4">
                       <div className="flex flex-col">
                         <span className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold mb-1">Order ID</span>
@@ -124,20 +124,20 @@ const Order = () => {
                   {/* 📦 Middle Section (Order Items) */}
                   <div className="flex flex-col gap-6">
                     {order.items.map((item, idx) => (
-                      <div 
-                        key={`${order._id}-${idx}`} 
+                      <div
+                        key={`${order._id}-${idx}`}
                         className="flex gap-5 items-center group/item relative p-3 -mx-3 rounded-xl hover:bg-[#ffffff03] transition-colors"
                       >
                         {/* Left: Product Image */}
                         <div className="w-20 h-24 md:w-24 md:h-28 rounded-xl overflow-hidden shrink-0 bg-[#0A0A0F] border border-[#ffffff0a] shadow-lg relative">
                           <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent z-10" />
-                          <img 
-                            src={item.image} 
-                            alt={item.title} 
-                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/item:scale-110 flex items-center justify-center text-[#4A4455] text-xs text-center wrap-break-word" 
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/item:scale-110 flex items-center justify-center text-[#4A4455] text-xs text-center wrap-break-word"
                           />
                         </div>
-                        
+
                         {/* Center: Product Info */}
                         <div className="grow flex flex-col justify-center gap-1.5">
                           <h3 className="font-semibold text-base md:text-lg text-gray-100 line-clamp-1 group-hover/item:text-white transition-colors duration-200">
@@ -156,7 +156,7 @@ const Order = () => {
                             )}
                           </div>
                         </div>
-                        
+
                         {/* Right: Price + Quantity */}
                         <div className="text-right flex flex-col justify-center min-w-[80px]">
                           <span className="font-bold text-gray-200 mb-1 block">
@@ -186,7 +186,7 @@ const Order = () => {
           </>
         ) : (
           /* ─── Empty State ─── */
-          <div 
+          <div
             className="flex flex-col items-center justify-center text-center py-24 animate-[fadeIn_0.5s_ease-out] grow"
           >
             <div className="text-[#4A4455] mb-8 animate-[float_6s_ease-in-out_infinite]">
@@ -202,8 +202,8 @@ const Order = () => {
             <p className="text-[#958DA1] max-w-md mb-8 text-sm leading-relaxed">
               Your order history is currently empty. Explore our latest premium collections and find your next favorite piece.
             </p>
-            
-            <Link 
+
+            <Link
               to="/"
               className="flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm tracking-wide text-white bg-linear-to-r from-[#7C3AED] to-[#3B82F6] hover:shadow-[0_0_35px_rgba(124,58,237,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
             >

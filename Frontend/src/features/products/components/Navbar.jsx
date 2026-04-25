@@ -65,7 +65,7 @@ const Navbar = () => {
                         Snitch
                     </h1>
                 </button>
-                
+
                 {/* ─── Search Bar ─── */}
                 <div className="hidden lg:flex flex-1 max-w-md mx-8">
                     <SearchBar />

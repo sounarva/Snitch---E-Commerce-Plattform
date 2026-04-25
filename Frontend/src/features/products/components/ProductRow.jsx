@@ -11,14 +11,14 @@ const ProductRow = ({ product, onImageClick, navigate }) => {
         <div className="group flex items-center justify-between p-4 mb-4 bg-[#1B1B20]/40 border border-[#4A4455]/15 rounded-2xl transition-all duration-300 hover:bg-[#1B1B20]/80 hover:border-[#7C3AED]/30 hover:shadow-[0_8px_30px_rgba(124,58,237,0.08)] hover:-translate-y-0.5">
             <div className="flex items-center gap-5 flex-1 min-w-0 pr-4">
                 {/* Thumbnail */}
-                <div 
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 cursor-pointer relative bg-[#0D0D14] border border-[#4A4455]/20 group/img" 
+                <div
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 cursor-pointer relative bg-[#0D0D14] border border-[#4A4455]/20 group/img"
                     onClick={() => onImageClick(imageUrl)}
                 >
-                    <img 
-                        src={imageUrl} 
-                        alt={product.title} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110" 
+                    <img
+                        src={imageUrl}
+                        alt={product.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white backdrop-blur-[2px]">
                         <ZoomIcon />

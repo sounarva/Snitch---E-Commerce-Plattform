@@ -8,7 +8,7 @@ const slides = [
         image: slide1,
         title: "Neon Nights Collection",
         subtitle: "Premium Streetwear for the Urban Explorer",
-    },  
+    },
     {
         image: slide2,
         title: "Futuristic Elegance",
@@ -41,9 +41,8 @@ const HeroCarousel = () => {
             {slides.map((slide, index) => (
                 <div
                     key={index}
-                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                        index === current ? "opacity-100 z-10" : "opacity-0 z-0"
-                    }`}
+                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === current ? "opacity-100 z-10" : "opacity-0 z-0"
+                        }`}
                 >
                     {/* Background Image with slow zoom animation */}
                     <div
@@ -57,7 +56,7 @@ const HeroCarousel = () => {
                     {/* Gradient Overlays for smooth blending into dark theme */}
                     {/* Top gradient to ensure navbar visibility */}
                     <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-[#0A0A0F]/80 to-transparent" />
-                    
+
                     {/* Bottom gradient to blend with next section */}
                     <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[#0A0A0F] to-transparent z-10" />
 
@@ -67,9 +66,8 @@ const HeroCarousel = () => {
                     {/* Slide Content */}
                     <div className="absolute inset-0 flex flex-col justify-center px-8 sm:px-12 lg:px-24 xl:px-40 z-20">
                         <div
-                            className={`max-w-2xl transform transition-all duration-1200 delay-300 ${
-                                index === current ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
-                            }`}
+                            className={`max-w-2xl transform transition-all duration-1200 delay-300 ${index === current ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+                                }`}
                         >
                             {/* Premium Badge */}
                             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#7C3AED]/40 bg-[#7C3AED]/10 backdrop-blur-md mb-8 shadow-[0_0_15px_rgba(124,58,237,0.2)]">
@@ -101,11 +99,10 @@ const HeroCarousel = () => {
                     <button
                         key={index}
                         onClick={() => setCurrent(index)}
-                        className={`transition-all duration-500 rounded-full h-1.5 ${
-                            index === current
-                                ? "w-10 bg-linear-to-r from-[#7C3AED] to-[#3B82F6] shadow-[0_0_10px_rgba(124,58,237,0.6)]"
-                                : "w-3 bg-white/30 hover:bg-white/60 hover:scale-110 cursor-pointer"
-                        }`}
+                        className={`transition-all duration-500 rounded-full h-1.5 ${index === current
+                            ? "w-10 bg-linear-to-r from-[#7C3AED] to-[#3B82F6] shadow-[0_0_10px_rgba(124,58,237,0.6)]"
+                            : "w-3 bg-white/30 hover:bg-white/60 hover:scale-110 cursor-pointer"
+                            }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
                 ))}

@@ -77,29 +77,26 @@ const Toast = ({ id, message, success, onClose }) => {
     >
       {/* Accent line on the left */}
       <div
-        className={`absolute left-0 top-3 bottom-3 w-[3px] rounded-full ${
-          success
+        className={`absolute left-0 top-3 bottom-3 w-[3px] rounded-full ${success
             ? "bg-linear-to-b from-[#34D399] to-[#059669]"
             : "bg-linear-to-b from-[#FF6B6B] to-[#DC2626]"
-        }`}
+          }`}
       />
 
       {/* Icon */}
       <div
-        className={`shrink-0 p-1.5 rounded-lg ${
-          success
+        className={`shrink-0 p-1.5 rounded-lg ${success
             ? "bg-[#34D399]/15 text-[#34D399]"
             : "bg-[#FF6B6B]/15 text-[#FF6B6B]"
-        }`}
+          }`}
       >
         {success ? <CheckIcon /> : <XCircleIcon />}
       </div>
 
       {/* Message */}
       <div className="flex-1 min-w-0">
-        <p className={`text-xs font-semibold uppercase tracking-wider mb-0.5 ${
-          success ? "text-[#34D399]" : "text-[#FF6B6B]"
-        }`}>
+        <p className={`text-xs font-semibold uppercase tracking-wider mb-0.5 ${success ? "text-[#34D399]" : "text-[#FF6B6B]"
+          }`}>
           {success ? "Success" : "Error"}
         </p>
         <p className="text-sm text-[#E4E1E9] leading-snug truncate">
@@ -119,11 +116,10 @@ const Toast = ({ id, message, success, onClose }) => {
       {/* Progress bar */}
       <div className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full overflow-hidden bg-[#4A4455]/20">
         <div
-          className={`h-full rounded-full ${
-            success
+          className={`h-full rounded-full ${success
               ? "bg-linear-to-r from-[#34D399] to-[#059669]"
               : "bg-linear-to-r from-[#FF6B6B] to-[#DC2626]"
-          }`}
+            }`}
           style={{
             animation: isVisible && !isLeaving ? "shrink 4s linear forwards" : "none",
           }}

@@ -14,7 +14,7 @@ const ShowProduct = () => {
     const { fetchSellerProducts } = useProducts();
     const { sellerProducts, loading } = useSelector(state => state.product);
     const navigate = useNavigate();
-    
+
     const [selectedImage, setSelectedImage] = useState(null);
 
     // Fetch products on mount
@@ -34,7 +34,7 @@ const ShowProduct = () => {
                 className="absolute top-6 right-6 lg:top-8 lg:right-10 z-50 flex items-center gap-2 font-semibold text-xs uppercase tracking-wider text-[#958DA1] transition-all duration-300 hover:text-[#D2BBFF] cursor-pointer bg-transparent border-none outline-none group"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="m15 18-6-6 6-6"/>
+                    <path d="m15 18-6-6 6-6" />
                 </svg>
                 Back to home
             </button>
@@ -46,7 +46,7 @@ const ShowProduct = () => {
             </div>
 
             <div className="relative z-10 max-w-6xl mx-auto flex flex-col h-full">
-                
+
                 {/* ═══ Header Section ═══ */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
                     <div>
@@ -62,7 +62,7 @@ const ShowProduct = () => {
                         </p>
                     </div>
 
-                    <button 
+                    <button
                         onClick={handleAddProduct}
                         className="px-5 py-2.5 rounded-xl font-bold text-sm tracking-wide text-white bg-linear-to-r from-[#7C3AED] to-[#3B82F6] hover:shadow-[0_0_25px_rgba(124,58,237,0.4)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 cursor-pointer"
                     >
@@ -73,7 +73,7 @@ const ShowProduct = () => {
 
                 {/* ═══ Main Data Container ═══ */}
                 <div className="flex-1 min-h-0 bg-[#0D0D14]/80 border border-[#4A4455]/15 rounded-3xl p-6 lg:p-8 shadow-[0_8px_40px_rgba(0,0,0,0.3)] backdrop-blur-xl flex flex-col">
-                    
+
                     {/* Header Row (Optional for premium feel) */}
                     {sellerProducts?.length > 0 && !loading && (
                         <div className="hidden sm:flex text-[#958DA1] text-xs uppercase tracking-[0.15em] font-semibold mb-4 px-4 pb-3 border-b border-[#4A4455]/20 gap-4">
@@ -93,9 +93,9 @@ const ShowProduct = () => {
                         ) : sellerProducts?.length > 0 ? (
                             <div className="flex flex-col gap-1">
                                 {sellerProducts.map((product) => (
-                                    <ProductRow 
-                                        key={product._id} 
-                                        product={product} 
+                                    <ProductRow
+                                        key={product._id}
+                                        product={product}
                                         onImageClick={setSelectedImage}
                                         navigate={navigate}
                                     />
@@ -111,7 +111,7 @@ const ShowProduct = () => {
                                 <p className="text-[#958DA1] max-w-sm mb-8 text-sm">
                                     You haven't listed any products yet. Get started by adding your first product to your inventory.
                                 </p>
-                                <button 
+                                <button
                                     onClick={handleAddProduct}
                                     className="px-6 py-3 rounded-xl border border-[#7C3AED]/50 bg-[#7C3AED]/10 text-[#D2BBFF] font-semibold text-sm hover:bg-[#7C3AED]/20 hover:shadow-[0_0_20px_rgba(124,58,237,0.2)] transition-all duration-300 cursor-pointer"
                                 >
@@ -125,9 +125,9 @@ const ShowProduct = () => {
             </div>
 
             {/* ═══ Image Modal ═══ */}
-            <ImageModal 
-                imageUrl={selectedImage} 
-                onClose={() => setSelectedImage(null)} 
+            <ImageModal
+                imageUrl={selectedImage}
+                onClose={() => setSelectedImage(null)}
             />
         </div>
     );
