@@ -24,7 +24,7 @@ const loadRazorpayScript = () => {
 const Cart = () => {
     const { fetchCart, updateCart, removeFromCart } = useCart();
     const { createOrder, verifyPayment } = useOrder();
-    const { cart, loading } = useSelector((state) => state.cart);
+    const { cart, totalPrice, loading } = useSelector((state) => state.cart);
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const { showToast } = useToast();
@@ -95,11 +95,7 @@ const Cart = () => {
 
     // ─── Calculations ─── 
     const totalItems = cart?.reduce((acc, item) => acc + item.quantity, 0) || 0;
-    const subtotal = cart?.reduce((acc, item) => {
-        const itemAmount = item.price?.currency === "USD" ? (item.price.amount * 83) : (item.price?.amount || 0);
-        return acc + itemAmount * item.quantity;
-    }, 0) || 0;
-    const formattedSubtotal = `₹${Number(subtotal).toLocaleString("en-IN")}`;
+    const formattedSubtotal = `₹${Number(totalPrice || 0).toLocaleString("en-IN")}`;
 
     const hasItems = cart && cart.length > 0;
 

@@ -1,16 +1,77 @@
+import mongoose from "mongoose";
 import cartModel from "../models/cart.model.js";
 import productModel from "../models/product.model.js";
 
-const getFormattedCart = async (cart) => {
-    await cart.populate("items.product")
+const getFormattedCart = async (cartOrUserID) => {
+    const userID = cartOrUserID?.user || cartOrUserID;
+
+    const cart = (await cartModel.aggregate(
+        [
+            {
+                $match: {
+                    user: new mongoose.Types.ObjectId(userID)
+                }
+            },
+            { $unwind: { path: '$items' } },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items.product',
+                    foreignField: '_id',
+                    as: 'items.product'
+                }
+            },
+            { $unwind: { path: '$items.product' } },
+            {
+                $unwind: { path: '$items.product.variants' }
+            },
+            {
+                $match: {
+                    $expr: {
+                        $eq: [
+                            '$items.variant',
+                            '$items.product.variants._id'
+                        ]
+                    }
+                }
+            },
+            {
+                $addFields: {
+                    itemPrice: {
+                        price: {
+                            $multiply: [
+                                '$items.quantity',
+                                '$items.product.price.amount'
+                            ]
+                        },
+                        currency:
+                            '$items.product.price.currency'
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id',
+                    totalPrice: { $sum: '$itemPrice.price' },
+                    currency: {
+                        $first: '$items.product.price.currency'
+                    },
+                    items: { $push: '$items' }
+                }
+            }
+        ]
+    ))[0];
+
+    if (!cart) {
+        return { cart: [] };
+    }
 
     const formattedCartItems = cart.items.map((item) => {
-        const product = item.product
-        if (!product) return null
+        const product = item.product;
 
-        const variant = product.variants?.find(
-            v => item.variant && v._id.toString() === item.variant.toString()
-        )
+        if (!product) return null;
+
+        const variant = product.variants;
 
         return {
             _id: item._id,
@@ -20,11 +81,14 @@ const getFormattedCart = async (cart) => {
             color: variant?.color || "",
             size: item.size,
             quantity: item.quantity,
-            image: variant?.images?.[0]?.url || product.images?.[0]?.url
-        }
-    }).filter(Boolean)
+            image: variant?.images?.[0]?.url || product.images?.[0]?.url,
+            totalPrice: cart.totalPrice || 0
+        };
+    }).filter(Boolean);
 
-    return formattedCartItems
+    return {
+        cart: formattedCartItems
+    };
 }
 
 
@@ -80,12 +144,12 @@ export const addToCartController = async (req, res) => {
             sizeObj.stock -= quantity
             await product.save()
 
-            const formattedCart = await getFormattedCart(cart)
+            const cartData = await getFormattedCart(userID)
             return res.status(201)
                 .json({
                     success: true,
                     message: "Item added to cart successfully",
-                    cart: formattedCart
+                    ...cartData
                 })
         }
 
@@ -114,13 +178,13 @@ export const addToCartController = async (req, res) => {
         }
 
         await cart.save()
-        const formattedCart = await getFormattedCart(cart)
+        const cartData = await getFormattedCart(userID)
 
         return res.status(200)
             .json({
                 success: true,
                 message: "Item added to cart successfully",
-                cart: formattedCart
+                ...cartData
             })
     } catch (error) {
         return res.status(500)
@@ -139,24 +203,13 @@ export const addToCartController = async (req, res) => {
 export const fetchCartController = async (req, res) => {
     try {
         const userID = req.user.id || req.user._id
-        const cart = await cartModel.findOne({ user: userID })
-
-        if (!cart) {
-            return res.status(200)
-                .json({
-                    success: true,
-                    message: "Cart is empty",
-                    cart: []
-                })
-        }
-
-        const formattedCart = await getFormattedCart(cart)
+        const cartData = await getFormattedCart(userID)
 
         return res.status(200)
             .json({
                 success: true,
                 message: "Cart fetched successfully",
-                cart: formattedCart
+                ...cartData
             })
     } catch (error) {
         return res.status(500)
@@ -178,7 +231,7 @@ export const updateCartController = async (req, res) => {
         const { cartItemId, quantity } = req.body
 
         let cart = await cartModel.findOne({ user: userID })
-        
+
         if (!cart) {
             return res.status(404)
                 .json({
@@ -229,16 +282,16 @@ export const updateCartController = async (req, res) => {
             sizeObj.stock -= delta
             existingItem.quantity = quantity
         }
-        
+
         await product.save()
         await cart.save()
-        const formattedCart = await getFormattedCart(cart)
+        const cartData = await getFormattedCart(userID)
 
         return res.status(200)
             .json({
                 success: true,
                 message: "Cart updated successfully",
-                cart: formattedCart
+                ...cartData
             })
     } catch (error) {
         return res.status(500)
@@ -290,13 +343,13 @@ export const removeFromCartController = async (req, res) => {
 
         cart.items = cart.items.filter(item => item._id.toString() !== cartItemId)
         await cart.save()
-        const formattedCart = await getFormattedCart(cart)
+        const cartData = await getFormattedCart(userID)
 
         return res.status(200)
             .json({
                 success: true,
                 message: "Item removed from cart successfully",
-                cart: formattedCart
+                ...cartData
             })
     } catch (error) {
         return res.status(500)

@@ -1,6 +1,6 @@
 import { addToCartApi, fetchCartApi, removeFromCartApi, updateCartApi } from "../services/cart.api"
 import { useDispatch } from "react-redux"
-import { setCart, setLoading, setError } from "../state/cart.slice"
+import { setCart, setLoading, setError, setTotalPrice } from "../state/cart.slice"
 
 export const useCart = () => {
     const dispatch = useDispatch()
@@ -10,6 +10,7 @@ export const useCart = () => {
             dispatch(setLoading(true))
             const response = await addToCartApi(data)
             dispatch(setCart(response.cart))
+            dispatch(setTotalPrice(response.cart[0]?.totalPrice || 0))
             return response
         } catch (error) {
             dispatch(setError(error.response.data.message))
@@ -24,6 +25,7 @@ export const useCart = () => {
             dispatch(setLoading(true))
             const response = await fetchCartApi()
             dispatch(setCart(response.cart))
+            dispatch(setTotalPrice(response.cart[0]?.totalPrice || 0))
             return response
         } catch (error) {
             dispatch(setError(error.response.data.message))
@@ -38,6 +40,7 @@ export const useCart = () => {
             dispatch(setLoading(true))
             const response = await updateCartApi(data)
             dispatch(setCart(response.cart))
+            dispatch(setTotalPrice(response.cart[0]?.totalPrice || 0))
             return response
         } catch (error) {
             dispatch(setError(error.response.data.message))
@@ -52,6 +55,7 @@ export const useCart = () => {
             dispatch(setLoading(true))
             const response = await removeFromCartApi({ cartItemId })
             dispatch(setCart(response.cart))
+            dispatch(setTotalPrice(response.cart[0]?.totalPrice || 0))
             return response
         } catch (error) {
             dispatch(setError(error.response.data.message))
