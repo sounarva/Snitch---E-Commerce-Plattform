@@ -1,8 +1,9 @@
 import { razorpay } from "../services/payment.service.js";
 import orderModel from "../models/order.model.js";
-import cartModel from "../models/cart.model.js";
 import crypto from "crypto";
 import { config } from "../config/config.js";
+import { getFormattedCart } from "../dao/cart.dao.js";
+import cartModel from "../models/cart.model.js";
 
 /**
  * @description Create order
@@ -12,11 +13,9 @@ import { config } from "../config/config.js";
 export const createOrderController = async (req, res) => {
     try {
         const userId = req.user.id
-        const cart = await cartModel.findOne({
-            user: userId
-        }).populate("items.product");
+        const { cart } = await getFormattedCart(userId);
 
-        if (!cart || cart.items.length === 0) {
+        if (!cart || cart.length === 0) {
             return res.status(400)
                 .json({
                     success: false,
@@ -26,16 +25,16 @@ export const createOrderController = async (req, res) => {
 
         let totalAmount = 0
 
-        cart.items.forEach(item => {
-            if (item.product.price.currency === "USD") {
-                totalAmount += item.product.price.amount * 83 * item.quantity
+        cart.forEach(item => {
+            if (item.price.currency === "USD") {
+                totalAmount += item.price.amount * 83 * item.quantity
             } else {
-                totalAmount += item.product.price.amount * item.quantity
+                totalAmount += item.price.amount * item.quantity
             }
         })
 
         const options = {
-            amount: totalAmount * 100,
+            amount: Number((cart[0]?.totalPrice || totalAmount) * 100),
             currency: "INR",
             receipt: `order_${Date.now()}`
         }
@@ -93,43 +92,40 @@ export const verifyPaymentController = async (req, res) => {
             })
         }
 
-        const cart = await cartModel
-            .findOne({ user: userId })
-            .populate("items.product");
+        const { cart } = await getFormattedCart(userId);
+
+        if (!cart || cart.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Cart is empty"
+            });
+        }
 
         let totalAmount = 0;
 
         // 🔥 CREATE ORDER ITEMS (SNAPSHOT)
-        const orderItems = cart.items.map(item => {
-            const product = item.product;
+        const orderItems = cart.map(item => {
             let productPrice;
 
-            let variant = null;
-            if (item.variant && product.variants && product.variants.length > 0) {
-                variant = product.variants.find(
-                    v => v._id.toString() === item.variant.toString()
-                );
-            }
-
-            if (product.price.currency === "USD") {
-                totalAmount += product.price.amount * 83 * item.quantity
-                productPrice = product.price.amount * 83;
+            if (item.price.currency === "USD") {
+                totalAmount += item.price.amount * 83 * item.quantity;
+                productPrice = item.price.amount * 83;
             } else {
-                totalAmount += product.price.amount * item.quantity
-                productPrice = product.price.amount;
+                totalAmount += item.price.amount * item.quantity;
+                productPrice = item.price.amount;
             }
 
             return {
-                product: product._id,
-                variant: item.variant || undefined,
+                product: item.productId,
+                variant: item.variantId || undefined,
                 size: item.size || "",
                 quantity: item.quantity,
 
                 // 💎 snapshot
-                title: product.title,
+                title: item.title,
                 price: productPrice,
-                image: variant?.images?.[0]?.url || product.images?.[0]?.url || "",
-                color: variant?.color || ""
+                image: item.image || "",
+                color: item.color || ""
             };
         });
 
@@ -137,15 +133,17 @@ export const verifyPaymentController = async (req, res) => {
         await orderModel.create({
             user: userId,
             items: orderItems,
-            totalAmount,
+            totalAmount: cart[0]?.totalPrice || totalAmount,
             paymentStatus: "paid",
             razorpayOrderId: razorpay_order_id,
             razorpayPaymentId: razorpay_payment_id
-        })
+        });
 
         // 🔥 CLEAR CART
-        cart.items = []
-        await cart.save()
+        await cartModel.findOneAndUpdate(
+            { user: userId },
+            { $set: { items: [] } }
+        );
 
         return res.status(200).json({
             success: true,

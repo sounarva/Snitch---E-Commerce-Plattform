@@ -8,17 +8,7 @@ import { useToast } from "../../../shared/Toaster";
 import CartItemCard from "../components/CartItemCard";
 import EmptyCartIcon from "../../../svg/EmptyCartIcon";
 import ShoppingBagIcon from "../../../svg/ShoppingBagIcon";
-
-// --- Razorpay Script Loader ---
-const loadRazorpayScript = () => {
-    return new Promise((resolve) => {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-        script.onload = () => resolve(true);
-        script.onerror = () => resolve(false);
-        document.body.appendChild(script);
-    });
-};
+import { useRazorpay } from "react-razorpay";
 
 // ─── Main Cart Component ─────────────────────────────────────────────
 const Cart = () => {
@@ -29,6 +19,7 @@ const Cart = () => {
     const navigate = useNavigate();
     const { showToast } = useToast();
     const [checkoutLoading, setCheckoutLoading] = useState(false);
+    const { error, isLoading, Razorpay } = useRazorpay();
 
     useEffect(() => {
         fetchCart();
@@ -37,13 +28,6 @@ const Cart = () => {
     const handleCheckout = async () => {
         try {
             setCheckoutLoading(true);
-            const res = await loadRazorpayScript();
-
-            if (!res) {
-                showToast("Cannot connect to Razorpay. Check your internet connection.", false);
-                setCheckoutLoading(false);
-                return;
-            }
 
             const getOrderRes = await createOrder();
             if (!getOrderRes.success) {
@@ -80,7 +64,7 @@ const Cart = () => {
                 },
             };
 
-            const paymentObject = new window.Razorpay(options);
+            const paymentObject = new Razorpay(options);
             paymentObject.on("payment.failed", function (response) {
                 showToast("Payment Failed!", false);
             });
