@@ -43,6 +43,7 @@ if(!process.env.RAZORPAY_SECRET){
 
 
 export const config = {
+    BASE_URL: process.env.BASE_URL,
     MONGO_URL : process.env.MONGO_URL,
     JWT_SECRET : process.env.JWT_SECRET,
     GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID,
