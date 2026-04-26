@@ -39,7 +39,7 @@ const Cart = () => {
             const { order } = getOrderRes;
 
             const options = {
-                key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_SfdW8tCLL23K9a",
+                key: "rzp_test_SfdW8tCLL23K9a",
                 amount: order.amount,
                 currency: order.currency,
                 name: "Snitch",

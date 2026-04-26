@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
-import slide1 from "../../../assets/slide1.png";
-import slide2 from "../../../assets/slide2.png";
-import slide3 from "../../../assets/slide3.png";
+import hero1 from "../../../assets/hero-1.avif";
+import hero2 from "../../../assets/hero-2.avif";
+import hero3 from "../../../assets/hero-3.avif";
 
 const slides = [
     {
-        image: slide1,
+        image: hero1,
         title: "Neon Nights Collection",
         subtitle: "Premium Streetwear for the Urban Explorer",
     },
     {
-        image: slide2,
+        image: hero2,
         title: "Futuristic Elegance",
         subtitle: "Luxury redefined with dark aesthetics.",
     },
     {
-        image: slide3,
+        image: hero3,
         title: "The Void Series",
         subtitle: "High-end apparel floating beyond boundaries.",
     },
