@@ -25,7 +25,8 @@ passport.use(new GoogleStrategy({
     clientSecret: config.GOOGLE_CLIENT_SECRET,
     callbackURL: config.BASE_URL
         ? `${config.BASE_URL}/api/v1/auth/google/callback`
-        : "/api/v1/auth/google/callback"
+        : "/api/v1/auth/google/callback",
+    proxy: true
 }, (_, __, profile, done) => {
     return done(null, profile);
 }))
