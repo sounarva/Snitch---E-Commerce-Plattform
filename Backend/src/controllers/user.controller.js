@@ -185,7 +185,7 @@ const googleCallbackController = async (req, res) => {
     try {
         const profile = req.user
         if (!profile || !profile.emails || !profile.emails[0].value) {
-            return res.redirect("http://localhost:5173/login");
+            return res.redirect(`${config.BASE_URL}/login`);
         }
 
         const email = profile.emails[0].value;
@@ -213,11 +213,11 @@ const googleCallbackController = async (req, res) => {
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
-        res.redirect("http://localhost:5173/");
+        res.redirect(`${config.BASE_URL}`);
 
     } catch (error) {
         console.error("Google callback error:", error)
-        res.redirect("http://localhost:5173/login");
+        res.redirect(`${config.BASE_URL}/login`);
     }
 }
 
